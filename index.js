@@ -6,6 +6,8 @@ console.log("Debugging: ", debug);
 /*
  * Notes
  *
+ * todo: secure mongo client
+ *
  * Resources:
  * https://bulma.io/documentation/
  * https://pugjs.org/api/getting-started.html
@@ -25,7 +27,6 @@ const express = require("express"),
 	// pugStatic = require("pug-static"),
 
 	// Project-Specific Dependencies
-	MongoClient = require("mongodb").MongoClient,
 	// io = require("socket.io"),
 	// listener = io.listen(server),
 
@@ -47,15 +48,6 @@ app.use("/", router);
 app.use((req, res, next) => {
 	res.status(404).render("404.pug");
 });
-
-// MongoDB
-// https://zellwk.com/blog/install-mongodb/
-// https://zellwk.com/blog/crud-express-mongodb/
-MongoClient.connect(process.env.mongoDBconnectionString, { useUnifiedTopology: true })
-	.then(client => {
-		debug && console.log("Connected to database: ", process.env.mongoDBconnectionString);
-		const db = client.db("db-1");
-	}).catch(err => console.error(err));
 
 // Socket.io Control
 // listener.sockets.on("connection", function connectionDetected (socket) {
