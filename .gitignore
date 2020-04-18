@@ -2,8 +2,9 @@
 # Read about how to use .gitignore: https://help.github.com/articles/ignoring-files
 
 # Custom - Remove as necessary
-vendor
+vendor/
 dist/
+personal_notes.md
 
 # Compiled source #
 ###################

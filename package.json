@@ -1,7 +1,7 @@
 {
-	"name": "MyProject",
+	"name": "COVID19FaceMask",
 	"version": "1.0.0",
-	"description": "Run: ncu -u; npm install",
+	"description": "",
 	"homepage": "https://github.com/Firebird1029/MyProject",
 	"bugs": {
 		"url": "https://github.com/Firebird1029/MyProject/issues",
@@ -29,30 +29,32 @@
 		"postinstall": "gulp production"
 	},
 	"dependencies": {
-		"bulma": "^0.7.1",
-		"express": "^4.15.3",
-		"helmet": "^3.12.1",
-		"npm": "^6.1.0",
-		"pug": "^2.0.0-rc.3",
+		"body-parser": "^1.19.0",
+		"bulma": "^0.8.2",
+		"express": "^4.17.1",
+		"helmet": "^3.22.0",
+		"mongodb": "^3.5.6",
+		"npm": "^6.14.4",
+		"pug": "^2.0.4",
 		"pug-static": "^1.0.1",
-		"socket.io": "^2.0.3"
+		"socket.io": "^2.3.0"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.2.2",
-		"@babel/preset-env": "^7.2.3",
-		"browser-sync": "^2.24.6",
+		"@babel/core": "^7.9.0",
+		"@babel/preset-env": "^7.9.5",
+		"browser-sync": "^2.26.7",
 		"dotenv": "^8.2.0",
-		"eslint": "^5.11.0",
-		"gulp": "^4.0.0",
-		"gulp-autoprefixer": "^6.0.0",
+		"eslint": "^6.8.0",
+		"gulp": "^4.0.2",
+		"gulp-autoprefixer": "^7.0.1",
 		"gulp-babel": "^8.0.0",
 		"gulp-concat": "^2.6.1",
 		"gulp-cssmin": "^0.2.0",
-		"gulp-load-plugins": "^1.5.0",
-		"gulp-nodemon": "^2.2.1",
-		"gulp-sass": "^4.0.1",
-		"gulp-sourcemaps": "^2.6.0",
-		"gulp-uglify": "^3.0.0",
+		"gulp-load-plugins": "^2.0.3",
+		"gulp-nodemon": "^2.5.0",
+		"gulp-sass": "^4.0.2",
+		"gulp-sourcemaps": "^2.6.5",
+		"gulp-uglify": "^3.0.2",
 		"npm-run-all": "^4.1.5"
 	}
 }
