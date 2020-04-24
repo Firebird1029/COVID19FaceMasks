@@ -5,6 +5,7 @@
 vendor/
 dist/
 personal_notes.md
+.env
 
 # Compiled source #
 ###################
