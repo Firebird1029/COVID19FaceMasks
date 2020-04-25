@@ -13,20 +13,17 @@ const express = require("express"),
 	helmet = require("helmet"),
 	cors = require("cors"),
 	passport = require("passport"),
-	bodyParser = require("body-parser"),
-	session = require("express-session");
+	bodyParser = require("body-parser");
 
-// Config
+// Passport Config
 require("./api/config/passportConfig.js");
 
-// Models
-// global.Task = require("./api/models/taskModel");
-const User = require("./api/models/UserModel");
-
-const router = require("./api/routes/apiRoutes.js");
+// Models & Express Router
+const User = require("./api/models/UserModel"),
+	router = require("./api/routes/apiRoutes.js");
 
 // Setup Express Middleware
-app.use(morgan("dev"));
+debug && app.use(morgan("dev"));
 app.use(helmet());
 app.use(cors());
 app.use(passport.initialize());
@@ -39,6 +36,7 @@ app.use(express.static(__dirname + "/public"));
 app.use("/api", router);
 app.use(history());
 
+// MongoDB Code
 mongoose.Promise = global.Promise;
 mongoose.set("useFindAndModify", false);
 mongoose.connect(process.env.MONGO_URL, { useUnifiedTopology: true, useNewUrlParser: true });
@@ -46,9 +44,9 @@ mongoose.set("debug", debug);
 
 const db = mongoose.connection;
 db.once("open", (_) => {
-	console.log("Database connected:", process.env.MONGO_URL.substring(process.env.MONGO_URL.indexOf("@")));
+	debug && console.log("Database connected:", process.env.MONGO_URL.substring(process.env.MONGO_URL.indexOf("@")));
 });
 
 db.on("error", (err) => {
-	console.error("Database connection error:", err);
+	debug && console.error("Database connection error:", err);
 });

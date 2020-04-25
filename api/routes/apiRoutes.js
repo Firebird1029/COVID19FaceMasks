@@ -19,5 +19,7 @@ router
 	.delete(userBuilder.deleteUser);
 
 router.route("/register").post(userBuilder.createUser);
+router.route("/login").post(userBuilder.loginUser);
+router.route("/findUser").get(userBuilder.findUser);
 
 module.exports = router;
