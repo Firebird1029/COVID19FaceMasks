@@ -2,10 +2,6 @@ const mongoose = require("mongoose"),
 	Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-	email: {
-		type: String,
-		required: true
-	},
 	username: {
 		type: String,
 		required: true
@@ -14,17 +10,21 @@ const userSchema = new Schema({
 		type: String,
 		required: true
 	},
+	email: {
+		type: String,
+		required: false // TODO change to true
+	},
 	firstName: {
 		type: String,
-		required: true
+		required: false // TODO change to true
 	},
 	lastName: {
 		type: String,
-		required: true
+		required: false // TODO change to true
 	},
 	phone: {
 		type: String,
-		required: true
+		required: false // TODO change to true
 	}
 });
 

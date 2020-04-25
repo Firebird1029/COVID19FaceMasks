@@ -18,4 +18,6 @@ router
 	.put(userBuilder.updateUser)
 	.delete(userBuilder.deleteUser);
 
+router.route("/register").post(userBuilder.createUser);
+
 module.exports = router;
