@@ -15,5 +15,8 @@ export default {
 	},
 	getUserByID(id) {
 		return apiClient.get("/api/users/" + id);
+	},
+	postNewListing(listing) {
+		return apiClient.post("/api/listing", listing);
 	}
 };

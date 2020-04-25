@@ -20,6 +20,7 @@ require("./api/config/passportConfig.js");
 
 // Models & Express Router
 const User = require("./api/models/UserModel"),
+	Listing = require("./api/models/ListingModel"),
 	router = require("./api/routes/apiRoutes.js");
 
 // Setup Express Middleware

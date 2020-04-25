@@ -8,7 +8,7 @@ const mongoose = require("mongoose"),
 // GET
 exports.listAllUsers = (req, res) => {
 	User.find({}, (err, users) => {
-		if (err) res.send(err);
+		if (err) res.status(400).send(err);
 		res.status(200).json(users);
 	});
 };
@@ -17,7 +17,7 @@ exports.listAllUsers = (req, res) => {
 // exports.createUser = (req, res) => {
 // 	const newUser = new User(req.body);
 // 	newUser.save((err, user) => {
-// 		if (err) res.send(err);
+// 		if (err) res.status(400).send(err);
 // 		res.status(200).json(user);
 // 	});
 // };
@@ -25,7 +25,7 @@ exports.listAllUsers = (req, res) => {
 // GET
 exports.readUser = (req, res) => {
 	User.findById(req.params.userID, (err, user) => {
-		if (err) res.send(err);
+		if (err) res.status(400).send(err);
 		res.status(200).json(user);
 	});
 };
@@ -33,7 +33,7 @@ exports.readUser = (req, res) => {
 // GET
 exports.readUserByUsername = (req, res) => {
 	User.findOne({ username: req.params.userID }, (err, user) => {
-		if (err) res.send(err);
+		if (err) res.status(400).send(err);
 		res.status(200).json(user);
 	});
 };
@@ -41,7 +41,7 @@ exports.readUserByUsername = (req, res) => {
 // PUT
 exports.updateUser = (req, res) => {
 	User.findOneAndUpdate({ _id: req.params.userId }, req.body, { new: true }, (err, user) => {
-		if (err) res.send(err);
+		if (err) res.status(400).send(err);
 		res.status(200).json(user);
 	});
 };
@@ -49,7 +49,7 @@ exports.updateUser = (req, res) => {
 // DELETE
 exports.deleteUser = (req, res) => {
 	User.findOneAndDelete()({ _id: req.params.userId }, (err, deletedUser) => {
-		if (err) res.send(err);
+		if (err) res.status(400).send(err);
 		res.status(200).json(deletedUser);
 	});
 };

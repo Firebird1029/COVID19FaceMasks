@@ -13,6 +13,9 @@
 
 <style lang="scss" scoped>
 	#nav {
+		text-align: center;
+
+		// Not my CSS Code TODO
 		padding: 30px;
 
 		a {

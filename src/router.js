@@ -9,28 +9,39 @@ const routes = [
 		// TODO change /home to / then add meta needs auth, then call next() if not logged in
 		path: "/home",
 		name: "home",
-		component: () => import("../views/Home.vue")
+		component: () => import("@/views/Home.vue")
 	},
 	{
 		path: "/",
 		name: "launch",
-		component: () => import("../views/Launch.vue")
+		component: () => import("@/views/Launch.vue")
 	},
 	{
 		path: "/login",
 		name: "login",
-		component: () => import("../views/Login.vue")
+		component: () => import("@/views/Login.vue")
 	},
 	{
 		path: "/register",
 		name: "register",
-		component: () => import("../views/Register.vue")
+		component: () => import("@/views/Register.vue")
+	},
+	{
+		path: "/listing/create",
+		name: "create-listing",
+		component: () => import("@/views/CreateListing.vue")
+	},
+	{
+		path: "/listing/:urlName",
+		name: "listing",
+		props: true,
+		component: () => import("@/views/Listing.vue")
 	},
 	{
 		path: "/profile/:username",
 		name: "profile",
 		props: true,
-		component: () => import("../views/Profile.vue")
+		component: () => import("@/views/Profile.vue")
 	},
 	{ path: "*", redirect: "/" }
 	// { path: "*", component: () => import("../views/404.vue") }
