@@ -5,6 +5,10 @@ import store from "./store";
 
 Vue.config.productionTip = false;
 
+// Title Mixin - Doesn't Work
+// import titleMixin from "./services/titleMixin";
+// Vue.mixin(titleMixin);
+
 // Automatic Global Registration
 import upperFirst from "lodash/upperFirst";
 import camelCase from "lodash/camelCase";
