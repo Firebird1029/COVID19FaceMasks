@@ -1,36 +1,30 @@
 <template lang="pug">
-	#nav.navContainer
-		router-link(:to="{ name: 'launch' }") Launch
-		|  | 
-		template(v-if="loggedIn")
-			//- If logged in
-			router-link(:to="{ name: 'home' }") Home
-			|  | 
-			router-link(:to="{ name: 'profile', params: {id: 'TODO_MY_ID_HERE'} }") My Profile
-			|  | 
-			button.button(@click="logout") Logout
-		template(v-else)
-			//- If NOT logged in
-			router-link(:to="{ name: 'login' }") Login
-			|  | 
-			router-link(:to="{ name: 'register' }") Signup
-		
+	b-navbar#nav.navContainer
+		p {{user}}
+		template(slot="brand")
+			b-navbar-item(tag="router-link", :to="{ path: '/' }")
+				img(src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png", alt="")
+		template(slot="start")
+			template(v-if="loggedIn")
+				b-navbar-item(tag="router-link", :to="{ name: 'home' }") Home
+		template(slot="end")
+			template(v-if="loggedIn")
+				.buttons
+					b-navbar-item.button.is-light(tag="router-link", :to="{ name: 'edit-profile' }") My Profile
+					a.button.is-text(@click="logout") Logout
+			template(v-else)
+				b-navbar-item(tag="div")
+					.buttons
+						b-navbar-item.button.is-light(tag="router-link", :to="{ name: 'login' }") Log in
+						b-navbar-item.button.is-primary(tag="router-link", :to="{ name: 'register' }"): strong Sign up
 </template>
 
 <style lang="scss" scoped>
+	@import "~bulma";
 	#nav {
-		text-align: center;
-
-		// Not my CSS Code TODO
-		padding: 30px;
-
-		a {
-			font-weight: bold;
-			color: #2c3e50;
-
-			&.router-link-exact-active {
-				color: #42b983;
-			}
+		padding: 1rem;
+		.router-link-exact-active {
+			color: $primary;
 		}
 	}
 </style>
