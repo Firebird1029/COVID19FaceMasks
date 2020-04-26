@@ -13,15 +13,15 @@ const userSchema = new Schema({
 	},
 	firstName: {
 		type: String,
-		required: false // TODO change to true
+		required: true
 	},
 	lastName: {
 		type: String,
-		required: false // TODO change to true
+		required: true
 	},
 	phone: {
 		type: String,
-		required: false // TODO change to true
+		required: true
 	},
 	joinDate: {
 		type: Date,

@@ -25,11 +25,11 @@ export default new Vuex.Store({
 		SET_SESSION_USER_DATA(state, sessionUserData) {
 			state.auth = sessionUserData.auth;
 			state.user = sessionUserData.user;
-			localStorage.setItem("sessionUserData", JSON.stringify(sessionUserData));
+			localStorage.setItem("savedUserData", JSON.stringify(sessionUserData.user));
 			apiService.setAxiosBearerHeader(sessionUserData.token);
 		},
 		CLEAR_SESSION_USER_DATA() {
-			localStorage.removeItem("sessionUserData");
+			localStorage.removeItem("savedUserData");
 			location.reload();
 		},
 		ADD_LISTING(state, newListing) {
@@ -41,9 +41,15 @@ export default new Vuex.Store({
 	},
 	actions: {
 		register({ commit }, accountInfo) {
-			return apiService.register(accountInfo).then((res) => {
-				commit("SET_SESSION_USER_DATA", res.data);
-			});
+			return apiService
+				.register(accountInfo)
+				.then((res) => {
+					commit("SET_SESSION_USER_DATA", res.data);
+				})
+				.catch((err) => {
+					// Return errors back to Vue component
+					throw err.response.data;
+				});
 		},
 		login({ commit }, credentialsInfo) {
 			return apiService

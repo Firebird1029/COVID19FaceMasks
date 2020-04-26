@@ -18,7 +18,8 @@
 		data() {
 			return {
 				email: "",
-				password: ""
+				password: "",
+				errors: []
 			};
 		},
 		methods: {
@@ -32,8 +33,7 @@
 						this.$router.push({ name: "home" });
 					})
 					.catch((errData) => {
-						let errors = errData.userErrors;
-						console.log("sdfsdfd", errors);
+						this.errors = errData.userErrors;
 					});
 			}
 		}

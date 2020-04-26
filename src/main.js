@@ -2,6 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router.js";
 import store from "./store.js";
+import axios from "axios";
 
 Vue.config.productionTip = false;
 
@@ -23,5 +24,23 @@ requireComponent.keys().forEach((fileName) => {
 new Vue({
 	router,
 	store,
+	created() {
+		// Automatic login using localstorage
+		// https://www.vuemastery.com/courses/token-based-authentication/automatic-login
+		if (localStorage.getItem("savedUserData")) {
+			this.$store.commit("SET_SESSION_USER_DATA", JSON.parse(localStorage.getItem("savedUserData")));
+		}
+
+		// Local Storage Security Feature, https://www.vuemastery.com/courses/token-based-authentication/automatic-login
+		axios.interceptors.response.use(
+			(response) => response,
+			(error) => {
+				if (error.response.status.toString().substring(0, 1) === "4") {
+					this.$store.dispatch("logout");
+				}
+				return Promise.reject(error);
+			}
+		);
+	},
 	render: (h) => h(App)
 }).$mount("#app");

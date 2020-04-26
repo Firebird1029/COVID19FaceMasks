@@ -30,14 +30,20 @@
 					firstName: "",
 					lastName: "",
 					phone: ""
-				}
+				},
+				errors: []
 			};
 		},
 		methods: {
 			registerFormSubmitted() {
-				this.$store.dispatch("register", this.accountInfo).then(() => {
-					this.$router.push({ name: "home" });
-				});
+				this.$store
+					.dispatch("register", this.accountInfo)
+					.then(() => {
+						this.$router.push({ name: "home" });
+					})
+					.catch((errData) => {
+						this.errors = errData.userErrors;
+					});
 			}
 		}
 	};
