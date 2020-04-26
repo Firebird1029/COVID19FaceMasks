@@ -1,16 +1,20 @@
 <template lang="pug">
 	section.section.loginContainer
-		form.loginForm(@submit.prevent="loginFormSubmitted")
-			b-field(label="Email", :type="{'is-danger': emailErrors.length }", :message="emailErrors", style="width: 60%; margin-left: 20%")
+		form.loginForm(@submit.prevent="loginFormSubmitted", style="width: 60%; margin-left: 20%")
+			b-field(label="Email", :type="{'is-danger': emailErrors.length }", :message="emailErrors")
 				b-input(v-model="email", type="email", name="email", icon="email", placeholder="Email")
-
-			b-field(label="Password", :type="{'is-danger': passwordErrors.length }", :message="passwordErrors", style="width: 60%; margin-left: 20%")
+			b-field(label="Password", :type="{'is-danger': passwordErrors.length }", :message="passwordErrors")
 				b-input(v-model="password", type="password", name="password", placeholder="Password", password-reveal="", icon="lock")
+			br
 			b-field
 				p.control.has-text-centered
-					input.button.is-primary(type="submit", name="submit", value="Submit")
+					input.button.is-primary(type="submit", name="submit", value="Login")
 
-			router-link(:to="{name: 'register'}") Register
+		br
+		br
+		.container.has-text-centered
+			router-link(:to="{name: 'register'}")
+				button.button Create an account instead
 </template>
 
 <style lang="scss" scoped>
@@ -54,17 +58,10 @@
 
 						if (this.internalErrors.length) {
 							this.$buefy.snackbar.open({
-								duration: 2000,
+								duration: 3000,
 								message: this.internalErrors,
 								type: "is-danger",
 								position: "is-top-right"
-								// actionText: "Retry",
-								// onAction: () => {
-								// 	this.$buefy.toast.open({
-								// 		message: "Action pressed",
-								// 		queue: false
-								// 	});
-								// }
 							});
 						}
 					});

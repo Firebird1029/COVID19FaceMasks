@@ -62,7 +62,7 @@ exports.createUser = (req, res, next) => {
 	if (!req.body.lastName) userErrors.push("Missing last name.");
 	if (!req.body.email) userErrors.push("Missing email.");
 	if (!req.body.password) userErrors.push("Missing password.");
-	if (req.body.password && req.body.password.length < 7) userErrors.push("Password too short.");
+	if (req.body.password && req.body.password.length < 7) userErrors.push("Please choose a longer password.");
 	if (!req.body.phone) userErrors.push("Missing phone.");
 
 	// If no use errors, then proceed to create user in database

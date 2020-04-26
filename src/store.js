@@ -26,7 +26,7 @@ export default new Vuex.Store({
 			apiService.setAxiosBearerHeader(sessionUserData.token);
 			state.auth = sessionUserData.auth;
 			state.user = sessionUserData.user;
-			localStorage.setItem("savedUserData", JSON.stringify(sessionUserData.user));
+			localStorage.setItem("savedUserData", JSON.stringify(sessionUserData));
 		},
 		CLEAR_SESSION_USER_DATA() {
 			localStorage.removeItem("savedUserData");

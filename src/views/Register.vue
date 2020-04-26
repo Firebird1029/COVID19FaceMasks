@@ -1,19 +1,31 @@
 <template lang="pug">
-	.registerContainer
-		form(@submit.prevent="registerFormSubmitted")
-			label First Name
-			input(v-model="accountInfo.firstName", type="text", name="fname")
-			label Last Name
-			input(v-model="accountInfo.lastName", type="text", name="lname")
-			label Email
-			input(v-model="accountInfo.email", type="email", name="email")
-			label Password
-			input(v-model="accountInfo.password", type="password", name="password")
-			label Phone Number
-			input(v-model="accountInfo.phone", type="phone", name="phone")
+	section.section.registerContainer
+		form(@submit.prevent="registerFormSubmitted", style="width: 60%; margin-left: 20%")
+			b-field(label="First Name", :type="{'is-danger': filteredErrors.fNameErrors.length }", :message="filteredErrors.fNameErrors")
+				b-input(v-model="accountInfo.firstName", type="text", name="fname", placeholder="First Name")
+			b-field(label="Last Name", :type="{'is-danger': filteredErrors.lNameErrors.length }", :message="filteredErrors.lNameErrors")
+				b-input(v-model="accountInfo.lastName", type="text", name="lname", placeholder="Last Name")
+			b-field(label="Email", :type="{'is-danger': filteredErrors.emailErrors.length }", :message="filteredErrors.emailErrors")
+				b-input(v-model="accountInfo.email", type="email", name="email", placeholder="Email")
+			b-field(label="Password", :type="{'is-danger': filteredErrors.passwordErrors.length }", :message="filteredErrors.passwordErrors")
+				b-input(v-model="accountInfo.password", type="password", name="password", placeholder="Password", password-reveal="")
+			b-field(label="Phone Number", :type="{'is-danger': filteredErrors.phoneErrors.length }", :message="filteredErrors.phoneErrors")
+				b-input(v-model="accountInfo.phone", type="phone", name="phone", placeholder="Phone Number")
+			br
+			b-field
+				b-checkbox(v-model="acceptTerms")
+					span I agree to the #[a(href="/terms") terms and conditions]
+					
+			br
+			b-field
+				p.control.has-text-centered
+					input.button.is-primary(type="submit", name="submit", value="Create an Account")
 
-			input(type="submit" name="submit" value="Submit")
-		router-link(:to="{name: 'login'}") Login
+		br
+		br
+		.container.has-text-centered
+			router-link(:to="{name: 'login'}")
+				button.button Login instead
 </template>
 
 <style lang="scss" scoped>
@@ -31,19 +43,53 @@
 					lastName: "",
 					phone: ""
 				},
-				errors: []
+				errors: [],
+				acceptTerms: false
 			};
+		},
+		computed: {
+			filteredErrors() {
+				return {
+					fNameErrors: this.errors.filter((el) => el.indexOf("first name") > -1).join(" "),
+					lNameErrors: this.errors.filter((el) => el.indexOf("last name") > -1).join(" "),
+					emailErrors: this.errors.filter((el) => el.indexOf("email") > -1).join(" "),
+					passwordErrors: this.errors.filter((el) => el.indexOf("password") > -1).join(" "),
+					phoneErrors: this.errors.filter((el) => el.indexOf("phone") > -1).join(" "),
+					internalErrors: this.errors
+						.filter((el) => el.indexOf("Unknown error") > -1 || el.indexOf("already exists") > -1)
+						.join(" ")
+				};
+			}
 		},
 		methods: {
 			registerFormSubmitted() {
-				this.$store
-					.dispatch("register", this.accountInfo)
-					.then(() => {
-						this.$router.push({ name: "home" });
-					})
-					.catch((errData) => {
-						this.errors = errData.userErrors;
+				if (this.acceptTerms) {
+					this.$store
+						.dispatch("register", this.accountInfo)
+						.then(() => {
+							this.$router.push({ name: "home" });
+						})
+						.catch((errData) => {
+							this.errors = errData.userErrors;
+
+							if (this.filteredErrors.internalErrors.length) {
+								this.$buefy.snackbar.open({
+									duration: 3000,
+									message: this.filteredErrors.internalErrors,
+									type: "is-danger",
+									position: "is-top-right"
+								});
+							}
+						});
+				} else {
+					// User did not check accept terms
+					this.$buefy.snackbar.open({
+						duration: 3000,
+						message: "Please accept the terms and conditions.",
+						type: "is-danger",
+						position: "is-top-right"
 					});
+				}
 			}
 		}
 	};

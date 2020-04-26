@@ -64,8 +64,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-	const loggedIn = localStorage.getItem("sessionUserData");
-
+	const loggedIn = localStorage.getItem("savedUserData");
 	if (to.matched.some((record) => record.meta.requiresAuth) && !loggedIn) {
 		// Auth required for this route, and user DOES NOT have auth
 		next("/");
