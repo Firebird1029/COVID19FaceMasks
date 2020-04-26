@@ -7,7 +7,7 @@
 <style lang="scss" scoped></style>
 
 <script>
-	import ApiService from "@/services/apiService.js";
+	// import ApiService from "@/services/apiService.js";
 	export default {
 		props: ["id"],
 		data() {
@@ -16,13 +16,13 @@
 			};
 		},
 		created() {
-			ApiService.getUserByID(this.id)
-				.then((res) => {
-					this.profile = res.data;
-				})
-				.catch((err) => {
-					console.log(err.response);
-				});
+			// ApiService.getUserByID(this.id)
+			// 	.then((res) => {
+			// 		this.profile = res.data;
+			// 	})
+			// 	.catch((err) => {
+			// 		console.log(err.response);
+			// 	});
 		}
 	};
 </script>
