@@ -23,10 +23,10 @@ export default new Vuex.Store({
 	},
 	mutations: {
 		SET_SESSION_USER_DATA(state, sessionUserData) {
+			apiService.setAxiosBearerHeader(sessionUserData.token);
 			state.auth = sessionUserData.auth;
 			state.user = sessionUserData.user;
 			localStorage.setItem("savedUserData", JSON.stringify(sessionUserData.user));
-			apiService.setAxiosBearerHeader(sessionUserData.token);
 		},
 		CLEAR_SESSION_USER_DATA() {
 			localStorage.removeItem("savedUserData");

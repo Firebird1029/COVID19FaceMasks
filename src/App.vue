@@ -70,12 +70,11 @@
 	@import "~bulma";
 	@import "~buefy/src/scss/buefy";
 
-	// #app {}
+	#app {
+	}
 </style>
 
 <script>
-	document.title = "Face Masks";
-
 	import Vue from "vue";
 	import VueHead from "vue-head";
 	import Buefy from "buefy";
@@ -84,19 +83,11 @@
 	export default {
 		components: {
 			NavBar: () => import("@/components/NavBar.vue")
-		}
-	};
-
-	// Buefy
-	Vue.use(Buefy);
-
-	// Head
-	Vue.use(VueHead);
-	Vue.extend({
+		},
 		head: {
-			// title: {
-			// 	inner: "It will be a pleasure"
-			// },
+			title: {
+				inner: "Face Masks"
+			},
 			// Meta tags
 			meta: [
 				// { name: "application-name", content: "Name of my application" },
@@ -137,12 +128,18 @@
 				// with shorthand
 				// { t: "application/ld+json", i: '{ "@context": "http://schema.org" }' }
 				// ...
-				{ async: true, src: "https://use.fontawesome.com/releases/v5.0.9/js/all.js" }
+				// { async: true, src: "https://use.fontawesome.com/releases/v5.0.9/js/all.js" }
 			],
 			style: [
 				// { type: "text/css", inner: "body { background-color: #000; color: #fff}", undo: false }
 				// ...
 			]
 		}
-	});
+	};
+
+	// Buefy
+	Vue.use(Buefy);
+
+	// Head
+	Vue.use(VueHead);
 </script>

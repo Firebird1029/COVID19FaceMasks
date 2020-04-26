@@ -59,13 +59,17 @@ passport.use(
 			User.findOne({ email })
 				.then((user) => {
 					if (!user) {
-						return done({ message: "User not found." }, false);
+						// User not found.
+						// return done({ message: "User not found." }, false);
+						return done({ message: "Failed login attempt." }, false);
 					} else {
 						bcrypt
 							.compare(password, user.password)
 							.then((response) => {
 								if (!response) {
-									return done({ message: "Password incorrect." }, false);
+									// Password incorrect.
+									// return done({ message: "Password incorrect." }, false);
+									return done({ message: "Failed login attempt." }, false);
 								}
 
 								// note the return needed with passport local - remove this return for passport JWT
