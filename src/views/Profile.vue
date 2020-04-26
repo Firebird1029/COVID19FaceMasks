@@ -1,6 +1,6 @@
 <template lang="pug">
 	.userContainer
-		p {{ username }}
+		p {{ id }}
 		p {{ profile }}
 </template>
 
@@ -9,14 +9,14 @@
 <script>
 	import ApiService from "@/services/apiService.js";
 	export default {
-		props: ["username"],
+		props: ["id"],
 		data() {
 			return {
 				profile: {}
 			};
 		},
 		created() {
-			ApiService.getUserByID(this.username)
+			ApiService.getUserByID(this.id)
 				.then((res) => {
 					this.profile = res.data;
 				})

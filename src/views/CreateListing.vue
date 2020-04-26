@@ -36,8 +36,8 @@
 		methods: {
 			generateBlankListing() {
 				return {
-					sewerID: this.$store.state.user.id, // TODO change to computed prop?
-					sewerUsername: this.$store.state.user.username,
+					sewerID: this.$store.state.user._id, // TODO change to computed prop?
+					sewerEmail: this.$store.state.user.email,
 					name: "",
 					img: "",
 					description: ""

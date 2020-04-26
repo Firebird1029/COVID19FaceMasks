@@ -1,7 +1,7 @@
-<template lang="pug">
+<!-- <template lang="pug">
 	.profileCardContainer
-		router-link(:to="{name: 'profile', params: { username: profile.username }}")
-			span {{ profile.username }}
+		router-link(:to="{name: 'profile', params: { id: profile.id }}")
+			span {{ profile.id }}
 </template>
 
 <style lang="scss" scoped>
@@ -18,3 +18,4 @@
 		}
 	};
 </script>
+ -->

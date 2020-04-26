@@ -6,27 +6,14 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
-		user: {
-			id: "3939393",
-			username: "bob",
-			password: "kjfkdsjflsdj",
-			email: "bobady@bobo.com",
-			firstName: "bdsf",
-			lastName: "dfdffdf",
-			phone: "3939393"
-		},
-		listings: [
-			{
-				id: 1,
-				name: "listing1"
-			},
-			{
-				id: 2,
-				name: "listing2"
-			}
-		]
+		auth: false,
+		user: {},
+		listings: []
 	},
 	getters: {
+		loggedIn: (state) => {
+			return state.auth;
+		},
 		listingsLength: (state) => {
 			return state.listings.length;
 		},
@@ -35,21 +22,59 @@ export default new Vuex.Store({
 		}
 	},
 	mutations: {
+		SET_SESSION_USER_DATA(state, sessionUserData) {
+			state.auth = sessionUserData.auth;
+			state.user = sessionUserData.user;
+			localStorage.setItem("sessionUserData", JSON.stringify(sessionUserData));
+			apiService.setAxiosBearerHeader(sessionUserData.token);
+		},
+		CLEAR_SESSION_USER_DATA() {
+			localStorage.removeItem("sessionUserData");
+			location.reload();
+		},
 		ADD_LISTING(state, newListing) {
 			state.listings.push(newListing);
+		},
+		SET_LISTINGS(state, listings) {
+			state.listings = listings;
 		}
 	},
 	actions: {
+		register({ commit }, accountInfo) {
+			return apiService.register(accountInfo).then((res) => {
+				commit("SET_SESSION_USER_DATA", res.data);
+			});
+		},
+		login({ commit }, credentialsInfo) {
+			return apiService
+				.login(credentialsInfo)
+				.then((res) => {
+					// Login successful, so store user data
+					commit("SET_SESSION_USER_DATA", res.data);
+				})
+				.catch((err) => {
+					// Return errors back to Vue component
+					throw err.response.data;
+				});
+		},
+		logout({ commit }) {
+			commit("CLEAR_SESSION_USER_DATA");
+		},
 		createNewListing({ commit }, newListing) {
-			// TODO handle what happens if no name etc etc -- handle here, on client side, what?
-			if (newListing) {
-				apiService
-					.postNewListing(newListing)
-					.then((res) => {
-						commit("ADD_LISTING", res.data);
-					})
-					.catch((err) => console.log("Error in createNewListing in actions in Vuex store", err));
-			}
+			apiService
+				.postNewListing(newListing)
+				.then((res) => {
+					commit("ADD_LISTING", res.data);
+				})
+				.catch((err) => console.log("Error in createNewListing in actions in Vuex store", err));
+		},
+		fetchListings({ commit }) {
+			apiService
+				.getListings()
+				.then((res) => {
+					commit("SET_LISTINGS", res.data);
+				})
+				.catch((err) => console.log("Error in fetchListings in actions in Vuex store", err));
 		}
 	},
 	modules: {}

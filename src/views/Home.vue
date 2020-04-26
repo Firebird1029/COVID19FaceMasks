@@ -1,6 +1,7 @@
 <template lang="pug">
 	.homeContainer
-		ProfileCard(v-for="profileListing in profileListings" :key="profileListing.id" :profile="profileListing")
+		p(v-for="listing in listings", :key="listing._id") {{listing}}
+		//- ProfileCard(v-for="listing in listings", :key="listing._id", :profile="listing")
 </template>
 
 <style lang="scss" scoped>
@@ -8,26 +9,20 @@
 </style>
 
 <script>
-	// import ProfileCard from "@/components/ProfileCard.vue"
-	import ApiService from "@/services/apiService.js";
+	import { mapState } from "vuex";
 
 	export default {
 		components: {
 			ProfileCard: () => import("@/components/ProfileCard.vue")
 		},
 		data() {
-			return {
-				profileListings: []
-			};
+			return {};
+		},
+		computed: {
+			...mapState(["listings"])
 		},
 		created() {
-			ApiService.getPublicUsers()
-				.then((res) => {
-					this.profileListings = res.data;
-				})
-				.catch((err) => {
-					console.log(err.response);
-				});
+			this.$store.dispatch("fetchListings");
 		}
 	};
 </script>

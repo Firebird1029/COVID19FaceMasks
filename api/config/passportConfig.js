@@ -18,21 +18,20 @@ passport.use(
 	"register",
 	new localStrategy(
 		{
-			usernameField: "username",
+			usernameField: "email",
 			passwordField: "password",
 			session: false,
 			passReqToCallback: true
 		},
-		(req, username, password, done) => {
+		(req, email, password, done) => {
 			bcrypt.genSalt(Number(process.env.BCRYPT_SALT_ROUNDS), (err, salt) => {
 				if (err) console.log("Error generating salt in passportConfig.js", err);
 				bcrypt.hash(password, salt, (err, hashedPassword) => {
 					if (err) console.log("Error generating hash in passportConfig.js", err);
 
 					User.create({
-						username: req.body.username,
+						email: email,
 						password: hashedPassword,
-						email: req.body.email,
 						firstName: req.body.firstName,
 						lastName: req.body.lastName,
 						phone: req.body.phone
@@ -52,21 +51,21 @@ passport.use(
 	"login",
 	new localStrategy(
 		{
-			usernameField: "username",
+			usernameField: "email",
 			passwordField: "password",
 			session: false
 		},
-		(username, password, done) => {
-			User.findOne({ username })
+		(email, password, done) => {
+			User.findOne({ email })
 				.then((user) => {
 					if (!user) {
-						return done({ message: "User not found" }, false);
+						return done({ message: "User not found." }, false);
 					} else {
 						bcrypt
 							.compare(password, user.password)
 							.then((response) => {
 								if (!response) {
-									return done({ message: "Password incorrect" }, false);
+									return done({ message: "Password incorrect." }, false);
 								}
 
 								// note the return needed with passport local - remove this return for passport JWT
@@ -91,7 +90,7 @@ const opts = {
 passport.use(
 	"jwt",
 	new JWTstrategy(opts, (jwt_payload, done) => {
-		User.findOne({ username: jwt_payload.id })
+		User.findOne({ email: jwt_payload.id })
 			.then((user) => {
 				if (user) {
 					// note the return removed with passport JWT - add this return for passport local

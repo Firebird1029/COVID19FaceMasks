@@ -5,15 +5,19 @@ const mongoose = require("mongoose"),
 
 // https://mongoosejs.com/docs/queries.html
 
-// GET
-exports.listAllListings = (req, res) => {
+// Retrieve/Fetch Listings -- GET
+exports.retrieveListings = (req, res) => {
 	Listing.find({}, (err, listings) => {
-		if (err) res.status(400).send(err);
-		res.status(200).json(listings);
+		if (err) {
+			// Not sure why Listing.find would return an error, tbh
+			res.status(400).send(err);
+		} else {
+			res.status(200).json(listings);
+		}
 	});
 };
 
-// POST
+// Create Listing -- POST
 exports.createListing = (req, res) => {
 	const newListing = new Listing(req.body);
 	newListing.save((err, listing) => {
