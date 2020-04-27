@@ -32,14 +32,18 @@
 		},
 		computed: {
 			emailErrors() {
-				return this.errors.filter((el) => el.indexOf("email") > -1).join(" ");
+				return this.errors.filter((el) => el.toLowerCase().indexOf("email") > -1).join(" ");
 			},
 			passwordErrors() {
-				return this.errors.filter((el) => el.indexOf("password") > -1).join(" ");
+				return this.errors.filter((el) => el.toLowerCase().indexOf("password") > -1).join(" ");
 			},
 			internalErrors() {
 				return this.errors
-					.filter((el) => el.indexOf("Unknown error") > -1 || el.indexOf("Failed login") > -1)
+					.filter(
+						(el) =>
+							el.toLowerCase().indexOf("unknown error") > -1 ||
+							el.toLowerCase().indexOf("failed login") > -1
+					)
 					.join(" ");
 			}
 		},

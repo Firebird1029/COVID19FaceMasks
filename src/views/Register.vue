@@ -51,13 +51,17 @@
 		computed: {
 			filteredErrors() {
 				return {
-					fNameErrors: this.errors.filter((el) => el.indexOf("first name") > -1).join(" "),
-					lNameErrors: this.errors.filter((el) => el.indexOf("last name") > -1).join(" "),
-					emailErrors: this.errors.filter((el) => el.indexOf("email") > -1).join(" "),
-					passwordErrors: this.errors.filter((el) => el.indexOf("password") > -1).join(" "),
-					phoneErrors: this.errors.filter((el) => el.indexOf("phone") > -1).join(" "),
+					fNameErrors: this.errors.filter((el) => el.toLowerCase().indexOf("first name") > -1).join(" "),
+					lNameErrors: this.errors.filter((el) => el.toLowerCase().indexOf("last name") > -1).join(" "),
+					emailErrors: this.errors.filter((el) => el.toLowerCase().indexOf("email") > -1).join(" "),
+					passwordErrors: this.errors.filter((el) => el.toLowerCase().indexOf("password") > -1).join(" "),
+					phoneErrors: this.errors.filter((el) => el.toLowerCase().indexOf("phone") > -1).join(" "),
 					internalErrors: this.errors
-						.filter((el) => el.indexOf("Unknown error") > -1 || el.indexOf("already exists") > -1)
+						.filter(
+							(el) =>
+								el.toLowerCase().indexOf("unknown error") > -1 ||
+								el.toLowerCase().indexOf("already exists") > -1
+						)
 						.join(" ")
 				};
 			}
