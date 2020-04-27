@@ -54,19 +54,19 @@
 				// { rel: "icon", href: require("./path/to/icon-16.png"), sizes: "16x16", type: "image/png" },
 				// with shorthand
 				// { r: "icon", h: "path/to/icon-32.png", sz: "32x32", t: "image/png" }
-				// ...
+				// ------------
 				{
 					rel: "stylesheet",
 					href: "https://cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css"
-				},
-				{ rel: "stylesheet", href: "https://use.fontawesome.com/releases/v5.2.0/css/all.css" }
+				}
+				// { rel: "stylesheet", href: "https://use.fontawesome.com/releases/v5.2.0/css/all.css" }
 			],
 			script: [
 				// { type: "text/javascript", src: "cdn/to/script.js", async: true, body: true }, // Insert in body
 				// with shorthand
 				// { t: "application/ld+json", i: '{ "@context": "http://schema.org" }' }
 				// ...
-				// { async: true, src: "https://use.fontawesome.com/releases/v5.0.9/js/all.js" }
+				{ src: "https://kit.fontawesome.com/5f3bd4bd8e.js", crossorigin: "anonymous", async: true }
 			],
 			style: [
 				// { type: "text/css", inner: "body { background-color: #000; color: #fff}", undo: false }

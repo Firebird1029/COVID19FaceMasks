@@ -2,19 +2,19 @@
 	section.section.loginContainer
 		form.loginForm(@submit.prevent="loginFormSubmitted", style="width: 60%; margin-left: 20%")
 			b-field(label="Email", :type="{'is-danger': emailErrors.length }", :message="emailErrors")
-				b-input(v-model="email", type="email", name="email", icon="email", placeholder="Email")
+				b-input(v-model="email", type="email", name="email", placeholder="Email", icon="envelope", icon-pack="fad")
 			b-field(label="Password", :type="{'is-danger': passwordErrors.length }", :message="passwordErrors")
-				b-input(v-model="password", type="password", name="password", placeholder="Password", password-reveal="", icon="lock")
+				b-input(v-model="password", type="password", name="password", placeholder="Password", password-reveal="", icon="lock", icon-pack="fad")
 			br
 			b-field
 				p.control.has-text-centered
 					input.button.is-primary(type="submit", name="submit", value="Login")
-
+		br
 		br
 		br
 		.container.has-text-centered
 			router-link(:to="{name: 'register'}")
-				button.button Create an account instead
+				button.button Create an account
 </template>
 
 <style lang="scss" scoped>

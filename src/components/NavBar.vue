@@ -1,6 +1,5 @@
 <template lang="pug">
 	b-navbar#nav.navContainer
-		p {{user}}
 		template(slot="brand")
 			b-navbar-item(tag="router-link", :to="{ path: '/' }")
 				img(src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png", alt="")
@@ -9,28 +8,54 @@
 				b-navbar-item(tag="router-link", :to="{ name: 'home' }") Home
 		template(slot="end")
 			template(v-if="loggedIn")
-				.buttons
-					b-navbar-item.button.is-light(tag="router-link", :to="{ name: 'edit-profile' }") My Profile
-					a.button.is-text(@click="logout") Logout
+				b-dropdown(position='is-bottom-left')
+					b-navbar-item(slot='trigger', role='button')
+						span Menu
+						b-icon(icon='menu-down')
+					b-dropdown-item(custom)
+						span.is-unselectable Logged in as 
+						strong.is-unselectable {{ user.firstName }} &nbsp; {{ user.lastName }}
+					hr.dropdown-divider
+					b-dropdown-item: router-link(tag="span", :to="{ name: 'my-listings' }"): .level(style="width: 100%"): .level-left
+						.level-item: b-icon(icon="head-side-mask", pack="fad")
+						.level-item: span My Masks
+					b-dropdown-item: router-link(tag="span", :to="{ name: 'edit-profile' }"): .level: .level-left
+						.level-item: b-icon(icon="cog", pack="fas")
+						.level-item: span My Profile
+					hr.dropdown-divider
+					b-dropdown-item(@click="logout"): .level: .level-left
+						.level-item: b-icon(icon="sign-out", pack="fas")
+						.level-item: span Logout
 			template(v-else)
 				b-navbar-item(tag="div")
 					.buttons
-						b-navbar-item.button.is-light(tag="router-link", :to="{ name: 'login' }") Log in
-						b-navbar-item.button.is-primary(tag="router-link", :to="{ name: 'register' }"): strong Sign up
+						router-link(:to="{ name: 'login' } ", tag="b-button", class="button is-light") Log in
+						router-link(:to="{ name: 'register' } ", tag="b-button", class="button is-primary") Sign up
 </template>
 
 <style lang="scss" scoped>
 	@import "~bulma";
 	#nav {
 		padding: 1rem;
-		.router-link-exact-active {
+		.router-link-exact-active:not(.is-primary) {
 			color: $primary;
+		}
+
+		// Fix dropdown styling against Buefy
+		.dropdown {
+			a.dropdown-item {
+				padding-right: 0;
+			}
+
+			.dropdown-item:focus {
+				outline: 0;
+			}
 		}
 	}
 </style>
 
 <script>
-	import { mapGetters } from "vuex";
+	import { mapState, mapGetters } from "vuex";
 	export default {
 		data() {
 			return {
@@ -38,6 +63,7 @@
 			};
 		},
 		computed: {
+			...mapState(["user"]),
 			...mapGetters(["loggedIn"])
 		},
 		methods: {

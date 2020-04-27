@@ -1,16 +1,17 @@
 <template lang="pug">
 	section.section.registerContainer
 		form(@submit.prevent="registerFormSubmitted", style="width: 60%; margin-left: 20%")
-			b-field(label="First Name", :type="{'is-danger': filteredErrors.fNameErrors.length }", :message="filteredErrors.fNameErrors")
-				b-input(v-model="accountInfo.firstName", type="text", name="fname", placeholder="First Name")
-			b-field(label="Last Name", :type="{'is-danger': filteredErrors.lNameErrors.length }", :message="filteredErrors.lNameErrors")
-				b-input(v-model="accountInfo.lastName", type="text", name="lname", placeholder="Last Name")
+			b-field(grouped)
+				b-field(expanded, label="First Name", :type="{'is-danger': filteredErrors.fNameErrors.length }", :message="filteredErrors.fNameErrors")
+					b-input(v-model="accountInfo.firstName", type="text", name="fname", placeholder="First Name")
+				b-field(expanded, label="Last Name", :type="{'is-danger': filteredErrors.lNameErrors.length }", :message="filteredErrors.lNameErrors")
+					b-input(v-model="accountInfo.lastName", type="text", name="lname", placeholder="Last Name")
 			b-field(label="Email", :type="{'is-danger': filteredErrors.emailErrors.length }", :message="filteredErrors.emailErrors")
-				b-input(v-model="accountInfo.email", type="email", name="email", placeholder="Email")
+				b-input(v-model="accountInfo.email", type="email", name="email", placeholder="Email", icon="envelope", icon-pack="fad")
 			b-field(label="Password", :type="{'is-danger': filteredErrors.passwordErrors.length }", :message="filteredErrors.passwordErrors")
-				b-input(v-model="accountInfo.password", type="password", name="password", placeholder="Password", password-reveal="")
+				b-input(v-model="accountInfo.password", type="password", name="password", placeholder="Password", password-reveal="", icon="lock", icon-pack="fad")
 			b-field(label="Phone Number", :type="{'is-danger': filteredErrors.phoneErrors.length }", :message="filteredErrors.phoneErrors")
-				b-input(v-model="accountInfo.phone", type="phone", name="phone", placeholder="Phone Number")
+				b-input(v-model="accountInfo.phone", type="phone", name="phone", placeholder="Phone Number", icon="phone", icon-pack="fad")
 			br
 			b-field
 				b-checkbox(v-model="acceptTerms")
@@ -25,7 +26,7 @@
 		br
 		.container.has-text-centered
 			router-link(:to="{name: 'login'}")
-				button.button Login instead
+				button.button.is-text Login instead
 </template>
 
 <style lang="scss" scoped>
