@@ -18,9 +18,15 @@ const listingSchema = new Schema({
 		type: String,
 		required: true
 	},
-	sewerUsername: {
+	sewerEmail: {
 		type: String,
 		required: true
+	},
+	sewerFirstName: {
+		type: String
+	},
+	sewerLastName: {
+		type: String
 	},
 	urlName: {
 		type: String,

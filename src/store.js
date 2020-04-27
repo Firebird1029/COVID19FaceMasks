@@ -72,7 +72,9 @@ export default new Vuex.Store({
 				.then((res) => {
 					commit("ADD_LISTING", res.data);
 				})
-				.catch((err) => console.log("Error in createNewListing in actions in Vuex store", err));
+				.catch((err) =>
+					console.log("Error in createNewListing in actions in Vuex store", err, err.response.data)
+				);
 		},
 		fetchListings({ commit }) {
 			apiService
@@ -80,7 +82,7 @@ export default new Vuex.Store({
 				.then((res) => {
 					commit("SET_LISTINGS", res.data);
 				})
-				.catch((err) => console.log("Error in fetchListings in actions in Vuex store", err));
+				.catch((err) => console.log("Error in fetchListings in actions in Vuex store", err, err.response.data));
 		}
 	},
 	modules: {}

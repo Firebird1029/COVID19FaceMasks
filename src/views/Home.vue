@@ -1,7 +1,9 @@
 <template lang="pug">
-	.homeContainer
-		p(v-for="listing in listings", :key="listing._id") {{listing}}
-		//- ProfileCard(v-for="listing in listings", :key="listing._id", :profile="listing")
+	section.section.homeContainer
+		.tile.is-ancestor(style="flex-wrap: wrap;")
+			//- https://stackoverflow.com/questions/42931638/how-to-make-tiles-wrap-with-bulma-css
+			ListingCard(v-for="listing in listings", :key="listing._id", :listing="listing")
+
 </template>
 
 <style lang="scss" scoped>
@@ -13,6 +15,7 @@
 
 	export default {
 		components: {
+			ListingCard: () => import("@/components/ListingCard.vue"),
 			ProfileCard: () => import("@/components/ProfileCard.vue")
 		},
 		data() {
@@ -21,7 +24,13 @@
 		computed: {
 			...mapState(["listings"])
 		},
-		created() {
+		methods: {
+			refresh() {
+				this.$store.dispatch("fetchListings");
+			}
+		},
+		mounted() {
+			// TODO move this to App.vue, return if logged in, else no
 			this.$store.dispatch("fetchListings");
 		}
 	};
