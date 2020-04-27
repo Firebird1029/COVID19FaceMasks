@@ -30,4 +30,6 @@ router
 	.get(listingBuilder.retrieveListings)
 	.post(listingBuilder.createListing);
 
+router.route("/listings/:urlName").get(listingBuilder.getListing);
+
 module.exports = router;

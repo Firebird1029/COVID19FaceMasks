@@ -29,6 +29,9 @@ export default {
 	getListings() {
 		return apiClient.get("/api/listings");
 	},
+	getListingByURL(url) {
+		return apiClient.get("/api/listings/" + url);
+	},
 	postNewListing(listing) {
 		return apiClient.post("/api/listings", listing);
 	}

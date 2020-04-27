@@ -17,6 +17,17 @@ exports.retrieveListings = (req, res) => {
 	});
 };
 
+// Get Listing -- GET
+exports.getListing = (req, res) => {
+	Listing.findOne({ urlName: req.params.urlName }, (err, listing) => {
+		if (err) {
+			res.status(400).json({ userErrors: ["Unknown error occured."] });
+		} else {
+			res.status(200).json(listing);
+		}
+	});
+};
+
 // Create Listing -- POST
 exports.createListing = (req, res) => {
 	const userErrors = [];
@@ -50,14 +61,6 @@ exports.createListing = (req, res) => {
 			}
 		});
 	}
-};
-
-// GET
-exports.readListingByID = (req, res) => {
-	Listing.findById(req.params.ListingID, (err, listing) => {
-		if (err) res.status(400).send(err);
-		res.status(200).json(listing);
-	});
 };
 
 // GET

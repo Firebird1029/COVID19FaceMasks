@@ -14,11 +14,8 @@ export default new Vuex.Store({
 		loggedIn: (state) => {
 			return state.auth;
 		},
-		listingsLength: (state) => {
-			return state.listings.length;
-		},
-		getListingByID: (state) => (id) => {
-			return state.listings.find((listing) => listing.id === id);
+		getStateListingByURL: (state) => (urlName) => {
+			return state.listings.find((listing) => listing.urlName === urlName);
 		}
 	},
 	mutations: {
@@ -78,12 +75,28 @@ export default new Vuex.Store({
 			});
 		},
 		fetchListings({ commit }) {
-			apiService
+			return apiService
 				.getListings()
 				.then((res) => {
 					commit("SET_LISTINGS", res.data);
 				})
-				.catch((err) => console.log("Error in fetchListings in actions in Vuex store", err, err.response.data));
+				.catch((err) => {
+					throw err.response.data;
+				});
+		},
+		fetchOneListingByURL({ getters }, urlName) {
+			return new Promise((resolve, reject) => {
+				if (getters.getStateListingByURL(urlName)) {
+					// Listing already exists in Vuex state
+					resolve(getters.getStateListingByURL(urlName));
+				} else {
+					// Look in database
+					apiService
+						.getListingByURL(urlName)
+						.then((res) => resolve(res.data))
+						.catch((err) => reject(err.response.data));
+				}
+			});
 		}
 	},
 	modules: {}

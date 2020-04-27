@@ -40,6 +40,7 @@ app.use(history());
 // MongoDB Code
 mongoose.Promise = global.Promise;
 mongoose.set("useFindAndModify", false);
+mongoose.set("useCreateIndex", true); // https://github.com/Automattic/mongoose/issues/6890
 mongoose.connect(process.env.MONGO_URL, { useUnifiedTopology: true, useNewUrlParser: true });
 mongoose.set("debug", debug);
 
