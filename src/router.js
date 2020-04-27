@@ -30,17 +30,20 @@ const routes = [
 	{
 		path: "/my-masks",
 		name: "my-listings",
+		meta: { requiresAuth: true },
 		component: () => import("@/views/MyListings.vue")
 	},
 	{
 		path: "/listing/create",
 		name: "create-listing",
+		meta: { requiresAuth: true },
 		component: () => import("@/views/CreateListing.vue")
 	},
 	{
 		path: "/listing/:urlName",
 		name: "listing",
 		props: true,
+		meta: { requiresAuth: true },
 		component: () => import("@/views/Listing.vue")
 	},
 	{
@@ -50,12 +53,12 @@ const routes = [
 		meta: { requiresAuth: true },
 		component: () => import("@/views/EditProfile.vue")
 	},
-	{
-		path: "/profile/:id",
-		name: "profile",
-		props: true,
-		component: () => import("@/views/Profile.vue")
-	},
+	// {
+	// 	path: "/profile/:id",
+	// 	name: "profile",
+	// 	props: true,
+	// 	component: () => import("@/views/Profile.vue")
+	// },
 	{ path: "*", redirect: "/" }
 	// { path: "*", component: () => import("../views/404.vue") }
 	// {

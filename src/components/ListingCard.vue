@@ -8,17 +8,18 @@
 				//- 		span.icon
 				//- 			i.fas.fa-angle-down
 				.card-image
-					figure.image.is-4by3
-						img(src="https://bulma.io/images/placeholders/1280x960.png", alt="Placeholder image")
+					router-link(:to="route")
+						figure.image.is-4by3
+							img(src="https://bulma.io/images/placeholders/1280x960.png", alt="Placeholder image")
 				.card-content
-					p.title.is-5.limitOneLine: strong {{ listing.name }}
-					.content.limitContentLines {{ listing.description }}
-					.media
-						.media-left
-							figure.image.is-48x48
-								img(src="https://bulma.io/images/placeholders/96x96.png", alt="Placeholder image")
-						.media-content
-							p.limitOneLine: strong {{ listing.sewerFirstName }} {{ listing.sewerLastName }}
+						p.title.is-5.limitOneLine: strong: router-link.has-text-dark(:to="route") {{ listing.name }}
+						.content.limitContentLines: router-link.has-text-dark(:to="route") {{ listing.description }}
+						.media
+							.media-left
+								figure.image.is-48x48
+									img(src="https://bulma.io/images/placeholders/96x96.png", alt="Placeholder image")
+							.media-content
+								p.limitOneLine: strong {{ listing.sewerFirstName }} {{ listing.sewerLastName }}
 							p.limitOneLine(style="font-size: 0.8rem") {{ sewerDetails }}
 				footer.card-footer
 					a.card-footer-item.has-text-centered.has-text-danger(@click="likeFeature"): b-icon(icon="heart", pack="far")
@@ -68,6 +69,9 @@
 			// },
 			sewerDetails() {
 				return "";
+			},
+			route() {
+				return { name: "listing", params: { urlName: this.listing.urlName } };
 			}
 		},
 		methods: {

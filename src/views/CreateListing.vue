@@ -48,7 +48,7 @@
 					sewerID: this.$store.state.user._id, // can't access computer prop for some reason
 					sewerEmail: this.$store.state.user.email,
 					sewerFirstName: this.$store.state.user.firstName,
-					sewerlastName: this.$store.state.user.lastName
+					sewerLastName: this.$store.state.user.lastName
 				};
 			},
 			listingFormSubmitted() {

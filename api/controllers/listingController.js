@@ -22,7 +22,7 @@ exports.createListing = (req, res) => {
 	const userErrors = [];
 	// Make sure user filled out all required fields
 	if (!req.body.name) userErrors.push("Missing mask name.");
-	if (req.body.name && req.body.name.length > 1 && req.body.name.length < 7)
+	if (req.body.name && req.body.name.length > 0 && req.body.name.length < 7)
 		userErrors.push("Mask name is too short.");
 
 	if (userErrors.length >= 1) {
