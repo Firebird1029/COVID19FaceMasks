@@ -31,7 +31,9 @@
 		},
 		mounted() {
 			// TODO move this to App.vue, return if logged in, else no
-			this.$store.dispatch("fetchListings");
+			if (!this.listings.length) {
+				this.refresh();
+			}
 		}
 	};
 </script>

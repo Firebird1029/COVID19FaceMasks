@@ -6,6 +6,9 @@
 		template(slot="start")
 			template(v-if="loggedIn")
 				b-navbar-item(tag="router-link", :to="{ name: 'home' }") Home
+				b-navbar-item
+					span &nbsp;
+					b-autocomplete(v-model="searchText", v-show="listings.length", placeholder="Search", :data="fusedListings", field="item.name", @select="option => selectedSearchListing = option", clearable, icon="search", icon-pack="fad", rounded)
 		template(slot="end")
 			template(v-if="loggedIn")
 				.level: .level-right
@@ -38,7 +41,6 @@
 </template>
 
 <style lang="scss" scoped>
-	@import "~bulma";
 	#nav {
 		padding: 1rem;
 		.router-link-exact-active:not(.is-primary) {
@@ -46,6 +48,9 @@
 		}
 
 		// Fix dropdown styling against Buefy
+		a.navbar-item:hover {
+			background-color: initial;
+		}
 		.dropdown {
 			a.dropdown-item {
 				padding-right: 0;
@@ -60,19 +65,37 @@
 
 <script>
 	import { mapState, mapGetters } from "vuex";
+	import Fuse from "fuse.js";
+
 	export default {
 		data() {
 			return {
-				//
+				searchText: "",
+				selectedSearchListing: null
 			};
 		},
 		computed: {
-			...mapState(["user"]),
-			...mapGetters(["loggedIn"])
+			...mapState(["user", "listings"]),
+			...mapGetters(["loggedIn"]),
+			fusedListings() {
+				return new Fuse(this.listings, {
+					keys: ["name", "description", "sewerFirstName", "sewerLastName"]
+				}).search(this.searchText);
+			}
 		},
 		methods: {
 			logout() {
 				this.$store.dispatch("logout");
+			}
+		},
+		watch: {
+			selectedSearchListing() {
+				if (this.selectedSearchListing) {
+					this.$router.push({
+						name: "listing",
+						params: { urlName: this.selectedSearchListing.item.urlName }
+					});
+				}
 			}
 		}
 	};

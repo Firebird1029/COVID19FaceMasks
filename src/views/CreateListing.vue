@@ -18,7 +18,7 @@
 </style>
 
 <script>
-	import { mapState, mapGetters } from "vuex";
+	import { mapState } from "vuex";
 	export default {
 		data() {
 			return {
@@ -28,7 +28,6 @@
 		},
 		computed: {
 			...mapState(["user", "listings"]),
-			...mapGetters(["getListingByID"]),
 			nameErrors() {
 				return this.errors.filter((el) => el.toLowerCase().indexOf("name") > -1).join(" ");
 			},
