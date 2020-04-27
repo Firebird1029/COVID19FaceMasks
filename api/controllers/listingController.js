@@ -19,15 +19,37 @@ exports.retrieveListings = (req, res) => {
 
 // Create Listing -- POST
 exports.createListing = (req, res) => {
-	const newListing = new Listing(req.body);
-	newListing.save((err, listing) => {
-		if (err) {
-			// i.e. not all required fields are filled out
-			res.status(422).send(err);
-		} else {
-			res.status(200).json(listing);
-		}
-	});
+	const userErrors = [];
+	// Make sure user filled out all required fields
+	if (!req.body.name) userErrors.push("Missing mask name.");
+	if (req.body.name && req.body.name.length > 1 && req.body.name.length < 7)
+		userErrors.push("Mask name is too short.");
+
+	if (userErrors.length >= 1) {
+		res.status(422).json({ userErrors });
+	} else {
+		// Generate a nice url string
+		const urlName =
+			encodeURI(
+				req.body.name
+					.replace(/[^a-zA-Z ]/g, "")
+					.replace(/\s+/g, "-")
+					.toLowerCase()
+					.substring(0, 30)
+			) +
+			"-" +
+			Math.floor(Math.random() * 10000000000);
+
+		const newListing = new Listing({ ...req.body, urlName });
+		newListing.save((err, listing) => {
+			if (err) {
+				// i.e. not all required fields are filled out
+				res.status(400).json({ userErrors: ["Unknown error when signing up. Please refresh and try again."] });
+			} else {
+				res.status(200).json(listing);
+			}
+		});
+	}
 };
 
 // GET

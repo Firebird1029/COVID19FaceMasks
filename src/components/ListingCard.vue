@@ -9,27 +9,43 @@
 				//- 			i.fas.fa-angle-down
 				.card-image
 					figure.image.is-4by3
-						img(src='https://bulma.io/images/placeholders/1280x960.png', alt='Placeholder image')
+						img(src="https://bulma.io/images/placeholders/1280x960.png", alt="Placeholder image")
 				.card-content
-					.content {{ description }}
+					p.title.is-5.limitOneLine: strong {{ listing.name }}
+					.content.limitContentLines {{ listing.description }}
 					.media
-						.media-content
-							p.title.is-5 {{ listing.name }}
-							p.subtitle.is-6 {{ listing.sewerFirstName }} {{ listing.sewerLastName }}
-						.media-right
+						.media-left
 							figure.image.is-48x48
-								img(src='https://bulma.io/images/placeholders/96x96.png', alt='Placeholder image')
+								img(src="https://bulma.io/images/placeholders/96x96.png", alt="Placeholder image")
+						.media-content
+							p.limitOneLine: strong {{ listing.sewerFirstName }} {{ listing.sewerLastName }}
+							p.limitOneLine(style="font-size: 0.8rem") {{ sewerDetails }}
 				footer.card-footer
-					p.card-footer-item.has-text-centered
-						a.has-text-danger(@click="like"): b-icon(icon="heart", pack="far")
-					p.card-footer-item.has-text-centered
-						a(@click="like"): b-icon(icon="comment", pack="far")
-					p.card-footer-item.has-text-centered
-						a(@click="like"): b-icon(icon="share-alt", pack="fad")
+					a.card-footer-item.has-text-centered.has-text-danger(@click="likeFeature"): b-icon(icon="heart", pack="far")
+					a.card-footer-item.has-text-centered.has-text-dark(@click="commentFeature"): b-icon(icon="comment", pack="far")
+					a.card-footer-item.has-text-centered.has-text-dark(@click="shareFeature"): b-icon(icon="share-alt", pack="fad")
 </template>
 
 <style lang="scss" scoped>
-	//
+	.limitContentLines {
+		// https://stackoverflow.com/questions/11151728/css-min-height-by-number-of-lines
+		line-height: 1.4em;
+		min-height: calc(1.4em * 2);
+
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 2; /* number of lines to show */
+		-webkit-box-orient: vertical;
+	}
+	.limitOneLine {
+		// https://stackoverflow.com/questions/3922739/limit-text-length-to-n-lines-using-css
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 1; /* number of lines to show */
+		-webkit-box-orient: vertical;
+	}
 </style>
 
 <script>
@@ -43,17 +59,26 @@
 			};
 		},
 		computed: {
-			description() {
-				const lengthMax = 80;
-				if (this.listing.description.length > lengthMax) {
-					return this.listing.description.substring(0, lengthMax) + "...";
-				}
-				return this.listing.description;
+			// description() {
+			// 	const lengthMax = 80;
+			// 	if (this.listing.description.length > lengthMax) {
+			// 		return this.listing.description.substring(0, lengthMax) + "...";
+			// 	}
+			// 	return this.listing.description;
+			// },
+			sewerDetails() {
+				return "";
 			}
 		},
 		methods: {
-			like() {
+			likeFeature() {
 				console.log("liked!");
+			},
+			commentFeature() {
+				//
+			},
+			shareFeature() {
+				//
 			}
 		}
 	};

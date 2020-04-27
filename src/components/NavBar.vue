@@ -8,24 +8,28 @@
 				b-navbar-item(tag="router-link", :to="{ name: 'home' }") Home
 		template(slot="end")
 			template(v-if="loggedIn")
-				b-dropdown(position='is-bottom-left')
-					b-navbar-item(slot='trigger', role='button')
-						span Menu
-						b-icon(icon='menu-down')
-					b-dropdown-item(custom)
-						span.is-unselectable Logged in as 
-						strong.is-unselectable {{ user.firstName }} &nbsp; {{ user.lastName }}
-					hr.dropdown-divider
-					b-dropdown-item: router-link(tag="span", :to="{ name: 'my-listings' }"): .level(style="width: 100%"): .level-left
-						.level-item: b-icon(icon="head-side-mask", pack="fad")
-						.level-item: span My Masks
-					b-dropdown-item: router-link(tag="span", :to="{ name: 'edit-profile' }"): .level: .level-left
-						.level-item: b-icon(icon="cog", pack="fas")
-						.level-item: span My Profile
-					hr.dropdown-divider
-					b-dropdown-item(@click="logout"): .level: .level-left
-						.level-item: b-icon(icon="sign-out", pack="fas")
-						.level-item: span Logout
+				.level: .level-right
+					.level-item
+						b-button.button.is-light(tag="router-link", :to="{name: 'create-listing'}") Donate mask
+					.level-item
+						b-dropdown(position='is-bottom-left')
+							b-navbar-item(slot='trigger', role='button')
+								span Menu
+								b-icon(icon='menu-down')
+							b-dropdown-item(custom)
+								span.is-unselectable Logged in as 
+								strong.is-unselectable {{ user.firstName }} &nbsp; {{ user.lastName }}
+							hr.dropdown-divider
+							b-dropdown-item: router-link(tag="span", :to="{ name: 'my-listings' }"): .level(style="width: 100%"): .level-left
+								.level-item: b-icon(icon="head-side-mask", pack="fad")
+								.level-item: span My Masks
+							b-dropdown-item: router-link(tag="span", :to="{ name: 'edit-profile' }"): .level: .level-left
+								.level-item: b-icon(icon="cog", pack="fas")
+								.level-item: span My Profile
+							hr.dropdown-divider
+							b-dropdown-item(@click="logout"): .level: .level-left
+								.level-item: b-icon(icon="sign-out", pack="fas")
+								.level-item: span Logout
 			template(v-else)
 				b-navbar-item(tag="div")
 					.buttons

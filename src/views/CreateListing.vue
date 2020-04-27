@@ -1,20 +1,16 @@
 <template lang="pug">
 	section.section.createListingContainer
-		p {{ listings }}
-		//- p {{ getListingByID(3)}}
-		hr
-		form(@submit.prevent="submittedListingForm")
-			.field
-				label Mask Name
-				input(v-model="listing.name", type="text", placeholder="Name here")
-			.field
-				label Picture
-				input(v-model="listing.img", type="text", placeholder="bob")
-			.field
-				label Description
-				p.help Optional
-				input(v-model="listing.description", type="text", placeholder="im a description")
-			input(type="submit", value="Submit")
+		form.createListingForm(@submit.prevent="listingFormSubmitted", style="width: 60%; margin-left: 20%")
+			b-field(label="Mask Name(s)", :type="{'is-danger': nameErrors.length }", :message="nameErrors")
+				b-input(v-model="listing.name", type="text", placeholder="", maxlength="40")
+			//- Picture field here
+			//- v-model="listing.img"
+			b-field(label="Description", :type="{'is-danger': descErrors.length }", :message="(descErrors.length) ? descErrors : '(Optional)'")
+				b-input(v-model="listing.description", type="textarea", name="description", placeholder="", maxlength="120")
+			br
+			b-field
+				p.control.has-text-centered
+					input.button.is-primary(type="submit", name="submit", value="Post")
 </template>
 
 <style lang="scss" scoped>
@@ -26,47 +22,58 @@
 	export default {
 		data() {
 			return {
-				listing: this.generateBlankListing()
+				listing: this.generateBlankListing(),
+				errors: []
 			};
 		},
 		computed: {
 			...mapState(["user", "listings"]),
-			...mapGetters(["getListingByID"])
+			...mapGetters(["getListingByID"]),
+			nameErrors() {
+				return this.errors.filter((el) => el.toLowerCase().indexOf("name") > -1).join(" ");
+			},
+			descErrors() {
+				return this.errors.filter((el) => el.toLowerCase().indexOf("description") > -1).join(" ");
+			},
+			internalErrors() {
+				return this.errors.filter((el) => el.toLowerCase().indexOf("Unknown error") > -1).join(" ");
+			}
 		},
 		methods: {
 			generateBlankListing() {
 				return {
-					sewerID: this.$store.state.user._id, // TODO change to computed prop?
-					sewerEmail: this.$store.state.user.email,
 					name: "",
 					img: "",
-					description: ""
+					description: "",
+					sewerID: this.$store.state.user._id, // can't access computer prop for some reason
+					sewerEmail: this.$store.state.user.email,
+					sewerFirstName: this.$store.state.user.firstName,
+					sewerlastName: this.$store.state.user.lastName
 				};
 			},
-			submittedListingForm() {
-				// Generate a nice url string
-				let urlName =
-					encodeURI(
-						this.listing.name
-							.replace(/[^a-zA-Z ]/g, "")
-							.replace(/\s+/g, "-")
-							.toLowerCase()
-							.substring(0, 30)
-					) +
-					"-" +
-					Math.floor(Math.random() * 10000000000);
-
+			listingFormSubmitted() {
 				this.$store
-					.dispatch("createNewListing", { ...this.listing, urlName })
-					.then(() => {
+					.dispatch("createNewListing", this.listing)
+					.then((newListing) => {
 						// Push to router before clearing listing
 						this.$router.push({
 							name: "listing",
-							params: { urlName }
+							params: { urlName: newListing.urlName }
 						});
 						this.listing = this.generateBlankListing();
 					})
-					.catch((err) => console.log("Error in submittedListingForm method in CreateListing.vue", err));
+					.catch((errData) => {
+						this.errors = errData.userErrors;
+
+						if (this.internalErrors.length) {
+							this.$buefy.snackbar.open({
+								duration: 3000,
+								message: this.internalErrors,
+								type: "is-danger",
+								position: "is-top-right"
+							});
+						}
+					});
 			}
 		}
 	};

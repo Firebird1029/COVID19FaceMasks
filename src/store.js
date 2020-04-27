@@ -67,14 +67,15 @@ export default new Vuex.Store({
 			commit("CLEAR_SESSION_USER_DATA");
 		},
 		createNewListing({ commit }, newListing) {
-			apiService
-				.postNewListing(newListing)
-				.then((res) => {
-					commit("ADD_LISTING", res.data);
-				})
-				.catch((err) =>
-					console.log("Error in createNewListing in actions in Vuex store", err, err.response.data)
-				);
+			return new Promise((resolve, reject) => {
+				apiService
+					.postNewListing(newListing)
+					.then((res) => {
+						commit("ADD_LISTING", res.data);
+						resolve(res.data);
+					})
+					.catch((err) => reject(err.response.data));
+			});
 		},
 		fetchListings({ commit }) {
 			apiService

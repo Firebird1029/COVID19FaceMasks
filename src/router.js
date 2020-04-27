@@ -79,7 +79,7 @@ router.beforeEach((to, from, next) => {
 	const loggedIn = localStorage.getItem("savedUserData");
 	if (to.matched.some((record) => record.meta.requiresAuth) && !loggedIn) {
 		// Auth required for this route, and user DOES NOT have auth
-		next("/");
+		next("/login");
 	}
 	// Auth NOT required for this route OR Auth required for this route, and user has auth
 	next();
