@@ -2,7 +2,7 @@
 	section.section.createListingContainer
 		form.createListingForm(@submit.prevent="listingFormSubmitted", style="width: 60%; margin-left: 20%")
 			b-field(label="Mask Name(s)", :type="{'is-danger': nameErrors.length }", :message="nameErrors")
-				b-input(v-model="listing.name", type="text", placeholder="", maxlength="40", :disabled="isLoading", required)
+				b-input(v-model="listing.name", type="text", placeholder="", maxlength="40", :disabled="isLoading")
 			b-field(label="Upload Image", :type="{'is-danger': imgErrors.length }", :message="imgErrors")
 				b-upload(v-model="fileUpload", ref="fileUpload", @change="handleFileUpload()", drag-drop, accept="image/*", :disabled="isLoading", required)
 					section.section
