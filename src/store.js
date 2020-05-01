@@ -66,6 +66,34 @@ export default new Vuex.Store({
 		logout({ commit }) {
 			commit("CLEAR_SESSION_USER_DATA");
 		},
+		fetchUserData({ commit }) {
+			return new Promise((resolve, reject) => {
+				apiService
+					.fetchUserData()
+					.then((res) => {
+						// Store user data
+						commit("SET_SESSION_USER_DATA", res.data);
+						resolve(res.data.user);
+					})
+					.catch((err) => {
+						reject(err.response.data);
+					});
+			});
+		},
+		updateUser({ commit }, userData) {
+			return new Promise((resolve, reject) => {
+				apiService
+					.updateUser(userData)
+					.then((res) => {
+						// Store user data
+						commit("SET_SESSION_USER_DATA", res.data);
+						resolve(res.data.user);
+					})
+					.catch((err) => {
+						reject(err.response.data);
+					});
+			});
+		},
 		createNewListing({ commit }, newListing) {
 			return new Promise((resolve, reject) => {
 				apiService

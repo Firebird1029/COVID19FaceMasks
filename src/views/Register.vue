@@ -16,12 +16,10 @@
 			b-field
 				b-checkbox(v-model="acceptTerms")
 					span I agree to the #[a(href="/terms") terms and conditions]
-					
 			br
 			b-field
 				p.control.has-text-centered
 					input.button.is-primary(type="submit", name="submit", value="Create an Account")
-
 		br
 		br
 		.container.has-text-centered

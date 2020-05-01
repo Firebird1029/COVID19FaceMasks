@@ -16,14 +16,16 @@ cloudinary.config({
 
 // Confirm Logged In -- Middleware (to confirm that user has valid JWT token before getting/putting listings from/to database)
 exports.confirmLoggedIn = (req, res, next) => {
-	console.log("hi");
 	const jwtToken = req.headers["authorization"] ? req.headers["authorization"].slice(7) : null; // Remove word "Bearer "
 	if (!jwtToken) return res.status(401).json({ auth: false, message: "User not logged in." });
 
 	jwt.verify(jwtToken, process.env.JWT_SECRET, function(err, decoded) {
-		if (err) return res.status(500).json({ auth: false, message: "Failed to authenticate user." });
+		if (err) {
+			return res.status(500).json({ auth: false, message: "Failed to authenticate user.", err });
+		} else {
+			next();
+		}
 	});
-	next();
 };
 
 // Retrieve/Fetch Listings -- GET

@@ -20,12 +20,18 @@ export default {
 	login(credentialsInfo) {
 		return apiClient.post("/api/login", credentialsInfo);
 	},
-	getPublicUsers() {
-		return apiClient.get("/api/users");
+	fetchUserData() {
+		return apiClient.get("/api/thisUser");
 	},
-	getUserByID(id) {
-		return apiClient.get("/api/users/" + id);
+	updateUser(userData) {
+		return apiClient.put("/api/thisUser", userData);
 	},
+	// getPublicUsers() {
+	// 	return apiClient.get("/api/users");
+	// },
+	// getUserByID(id) {
+	// 	return apiClient.get("/api/users/" + id);
+	// },
 	getListings() {
 		return apiClient.get("/api/listings");
 	},

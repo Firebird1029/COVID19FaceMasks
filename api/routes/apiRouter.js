@@ -10,7 +10,10 @@ const express = require("express"),
 // User Functionality
 router.route("/register").post(userBuilder.createUser);
 router.route("/login").post(userBuilder.loginUser);
-router.route("/findUser").get(userBuilder.findUser);
+router
+	.route("/thisUser")
+	.get(userBuilder.findUser)
+	.put(userBuilder.updateUser);
 
 // Listing Functionality
 // TODO jwt sign all these routes
