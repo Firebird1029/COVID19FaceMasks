@@ -8,7 +8,11 @@ const listingSchema = new Schema({
 	},
 	img: {
 		type: String,
-		required: false // TODO pic needed? and change to buffer not string
+		required: false
+	},
+	imgID: {
+		type: String,
+		required: false
 	},
 	description: {
 		type: String,

@@ -29,7 +29,7 @@ exports.retrieveListings = (req, res) => {
 // Get Listing -- GET
 exports.getListing = (req, res) => {
 	Listing.findOne({ urlName: req.params.urlName }, (err, listing) => {
-		if (err) res.status(400).json({ userErrors: ["Unknown error occured."] });
+		if (err) res.status(400).json({ userErrors: ["Unknown error occured."], serverErrors: [err] });
 		res.status(200).json(listing);
 	});
 };
@@ -62,7 +62,10 @@ exports.createListing = (req, res) => {
 		newListing.save((err, listing) => {
 			if (err) {
 				// Could happen if user did not fill out all fields, but we check for that earlier
-				res.status(400).json({ userErrors: ["Unknown error occured when creating listing."] });
+				res.status(400).json({
+					userErrors: ["Unknown error occured when creating listing."],
+					serverErrors: [err]
+				});
 			} else {
 				res.status(200).json(listing);
 			}
@@ -86,14 +89,14 @@ exports.createListing = (req, res) => {
 // 	});
 // };
 
-// Edit Listing -- POST (later PUT)
-exports.editListing = (req, res) => {
+// Upload Image to Listing -- POST
+exports.uploadImageToListing = (req, res) => {
 	const form = formidable({ multiples: true });
 
 	form.parse(req, (err, formFields, formFiles) => {
 		if (err) {
 			console.log(err);
-			res.status(400).json({ userErrors: ["Unknown error occured when uploading image."] });
+			res.status(400).json({ userErrors: ["Unknown error occured when uploading image."], serverErrors: [err] });
 		} else {
 			const listing = JSON.parse(formFields.listingData);
 
@@ -111,22 +114,26 @@ exports.editListing = (req, res) => {
 					}
 				})
 				.then(function(image) {
-					// image.url, image.public_id
-
 					// Store url to image on Cloudinary to MongoDB
 					Listing.findOneAndUpdate(
 						{ _id: listing._id }, // Find listing by its ID, passed as a "field" in the form-data
-						{ img: image.url }, // The data to change in the document
+						{ img: image.url, imgID: image.public_id }, // The data to change in the document
 						{ new: true }, // Return the new document
 						(err, listing) => {
 							if (err)
-								res.status(400).json({ userErrors: ["Unknown error occured when uploading image."] });
+								res.status(400).json({
+									userErrors: ["Unknown error occured when uploading image."],
+									serverErrors: [err]
+								});
 							res.sendStatus(200);
 						}
 					);
 				})
 				.catch(function(err) {
-					res.status(400).json({ userErrors: ["Unknown error occured when uploading image."] });
+					res.status(400).json({
+						userErrors: ["Unknown error occured when uploading image."],
+						serverErrors: [err]
+					});
 				});
 		}
 	});

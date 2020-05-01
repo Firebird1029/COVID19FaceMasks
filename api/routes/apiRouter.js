@@ -31,7 +31,7 @@ router
 	.get(listingBuilder.retrieveListings)
 	.post(listingBuilder.createListing);
 
-router.route("/listings/uploadImage").post(listingBuilder.editListing);
+router.route("/listings/uploadImage").post(listingBuilder.uploadImageToListing);
 router.route("/listings/:urlName").get(listingBuilder.getListing);
 
 module.exports = router;

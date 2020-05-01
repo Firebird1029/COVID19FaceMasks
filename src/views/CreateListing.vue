@@ -33,7 +33,8 @@
 				isLoading: false,
 				listing: this.generateBlankListing(),
 				fileUpload: null,
-				errors: []
+				errors: [],
+				serverErrors: []
 			};
 		},
 		computed: {
@@ -48,7 +49,7 @@
 				return this.errors.filter((el) => el.toLowerCase().indexOf("description") > -1).join(" ");
 			},
 			internalErrors() {
-				return this.errors.filter((el) => el.toLowerCase().indexOf("Unknown error") > -1).join(" ");
+				return this.errors.filter((el) => el.toLowerCase().indexOf("unknown error") > -1).join(" ");
 			}
 		},
 		methods: {
@@ -110,6 +111,7 @@
 							.catch((err) => {
 								// Error when uploading image via Cloudinary
 								this.errors = errData.userErrors;
+								this.serverErrors = errData.serverErrors;
 
 								if (this.internalErrors.length) {
 									this.$buefy.snackbar.open({
@@ -119,12 +121,14 @@
 										position: "is-top-right"
 									});
 								}
+								loadingComponent.close();
 								this.isLoading = false;
 							});
 					})
 					.catch((errData) => {
 						// Errors, i.e. user did not fill out all fields
 						this.errors = errData.userErrors;
+						this.serverErrors = errData.serverErrors;
 
 						if (this.internalErrors.length) {
 							this.$buefy.snackbar.open({
@@ -134,6 +138,7 @@
 								position: "is-top-right"
 							});
 						}
+						loadingComponent.close();
 						this.isLoading = false;
 					});
 			}
