@@ -7,9 +7,9 @@
 				br
 				br
 				.level(style="padding-left: 2rem; padding-right: 2rem;")
-					.level-item: b-button(icon-left="heart", icon-pack="far", type="is-danger", outlined) Like
-					.level-item: b-button(icon-left="comment", icon-pack="far", outlined) Comment
-					.level-item: b-button(icon-left="share-alt", icon-pack="fad", outlined) Share
+					.level-item: b-button(icon-left="heart", icon-pack="far", type="is-danger", outlined, @click="likeFeature") Like
+					.level-item: b-button(icon-left="comment", icon-pack="far", outlined, @click="commentFeature") Comment
+					.level-item: b-button(icon-left="share-alt", icon-pack="fad", outlined, @click="shareFeature") Share
 				br
 				a.has-text-grey-light(@click="reportListing", style="padding-left: 2rem;")
 					b-icon(icon="flag", pack="far", size="is-small")
@@ -44,6 +44,33 @@
 			};
 		},
 		methods: {
+			likeFeature() {
+				this.$buefy.snackbar.open({
+					duration: 3000,
+					message: "Coming soon!",
+					type: "is-primary",
+					position: "is-top-right",
+					queue: false
+				});
+			},
+			commentFeature() {
+				this.$buefy.snackbar.open({
+					duration: 3000,
+					message: "Coming soon!",
+					type: "is-primary",
+					position: "is-top-right",
+					queue: false
+				});
+			},
+			shareFeature() {
+				this.$buefy.snackbar.open({
+					duration: 3000,
+					message: "Coming soon!",
+					type: "is-primary",
+					position: "is-top-right",
+					queue: false
+				});
+			},
 			reportListing() {
 				// TODO
 			}

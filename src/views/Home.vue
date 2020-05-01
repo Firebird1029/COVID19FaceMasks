@@ -27,7 +27,7 @@
 		},
 		methods: {
 			refresh() {
-				this.$store.dispatch("fetchListings");
+				this.$store.dispatch("fetchListings").catch((err) => console.log(err)); // TODO error management
 			}
 		},
 		mounted() {

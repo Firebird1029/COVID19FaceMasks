@@ -76,13 +76,31 @@
 		},
 		methods: {
 			likeFeature() {
-				console.log("liked!");
+				this.$buefy.snackbar.open({
+					duration: 3000,
+					message: "Coming soon!",
+					type: "is-primary",
+					position: "is-top-right",
+					queue: false
+				});
 			},
 			commentFeature() {
-				//
+				this.$buefy.snackbar.open({
+					duration: 3000,
+					message: "Coming soon!",
+					type: "is-primary",
+					position: "is-top-right",
+					queue: false
+				});
 			},
 			shareFeature() {
-				//
+				this.$buefy.snackbar.open({
+					duration: 3000,
+					message: "Coming soon!",
+					type: "is-primary",
+					position: "is-top-right",
+					queue: false
+				});
 			}
 		}
 	};

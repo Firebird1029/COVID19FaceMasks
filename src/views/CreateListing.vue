@@ -3,13 +3,19 @@
 		form.createListingForm(@submit.prevent="listingFormSubmitted", style="width: 60%; margin-left: 20%")
 			b-field(label="Mask Name(s)", :type="{'is-danger': nameErrors.length }", :message="nameErrors")
 				b-input(v-model="listing.name", type="text", placeholder="", maxlength="40", :disabled="isLoading")
-			b-field(label="Upload Image", :type="{'is-danger': imgErrors.length }", :message="imgErrors")
-				b-upload(v-model="fileUpload", ref="fileUpload", @change="handleFileUpload()", drag-drop, accept="image/*", :disabled="isLoading", required)
-					section.section
-						.content.has-text-centered
-							p: b-icon(icon="upload", size="is-large", pack="fas")
-							p Drop your files here or click to upload
-			b-tag(v-show="fileUpload") {{ fileUpload ? fileUpload.name : "" }}
+			.columns
+				.column
+					b-field(label="Upload Image", :type="{'is-danger': imgErrors.length }", :message="imgErrors")
+						b-upload(v-model="fileUpload", @input="handleFileUpload", drag-drop, accept="image/*", :disabled="isLoading", required)
+							section.section
+								.content.has-text-centered
+									p: b-icon(icon="upload", size="is-large", pack="fas")
+									p Drop your files here or click to upload
+				.column
+					figure.image.is-square(style="max-height: 10rem;")
+						img.centerImage(:src="fileUploadPreviewSrc")
+					br
+					b-tag(v-show="fileUpload") {{ fileUpload ? fileUpload.name : "" }}
 			p.spacer
 			b-field(label="Description", :type="{'is-danger': descErrors.length }", :message="(descErrors.length) ? descErrors : '(Optional)'")
 				b-input(v-model="listing.description", type="textarea", name="description", placeholder="", maxlength="300", :disabled="isLoading")
@@ -34,6 +40,7 @@
 				isLoading: false,
 				listing: this.generateBlankListing(),
 				fileUpload: null,
+				fileUploadPreviewSrc: "",
 				errors: [],
 				serverErrors: []
 			};
@@ -66,7 +73,23 @@
 				};
 			},
 			handleFileUpload() {
-				this.fileUpload = this.$refs.fileUpload.files[0];
+				if (this.fileUpload.size > 3 * 1024 * 1024) {
+					// File size too big
+					this.fileUpload = null;
+					this.$buefy.snackbar.open({
+						duration: 3000,
+						message: "Image file size cannot exceed 3 MB.",
+						type: "is-danger",
+						position: "is-top-right"
+					});
+				} else {
+					// Show preview
+					let reader = new FileReader();
+					reader.onload = (e) => {
+						this.fileUploadPreviewSrc = e.target.result;
+					};
+					reader.readAsDataURL(this.fileUpload);
+				}
 			},
 			listingFormSubmitted() {
 				// Prevent user input
