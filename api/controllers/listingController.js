@@ -14,14 +14,26 @@ cloudinary.config({
 
 // https://mongoosejs.com/docs/queries.html
 
+// Confirm Logged In -- Middleware (to confirm that user has valid JWT token before getting/putting listings from/to database)
+exports.confirmLoggedIn = (req, res, next) => {
+	console.log("hi");
+	const jwtToken = req.headers["authorization"] ? req.headers["authorization"].slice(7) : null; // Remove word "Bearer "
+	if (!jwtToken) return res.status(401).json({ auth: false, message: "User not logged in." });
+
+	jwt.verify(jwtToken, process.env.JWT_SECRET, function(err, decoded) {
+		if (err) return res.status(500).json({ auth: false, message: "Failed to authenticate user." });
+	});
+	next();
+};
+
 // Retrieve/Fetch Listings -- GET
 exports.retrieveListings = (req, res) => {
 	Listing.find({}, (err, listings) => {
 		if (err) {
 			// Not sure why Listing.find would return an error, tbh
-			res.status(400).send(err);
+			return res.status(400).send(err);
 		} else {
-			res.status(200).json(listings);
+			return res.status(200).json(listings);
 		}
 	});
 };
@@ -29,8 +41,8 @@ exports.retrieveListings = (req, res) => {
 // Get Listing -- GET
 exports.getListing = (req, res) => {
 	Listing.findOne({ urlName: req.params.urlName }, (err, listing) => {
-		if (err) res.status(400).json({ userErrors: ["Unknown error occured."], serverErrors: [err] });
-		res.status(200).json(listing);
+		if (err) return res.status(400).json({ userErrors: ["Unknown error occured."], serverErrors: [err] });
+		return res.status(200).json(listing);
 	});
 };
 
@@ -54,7 +66,7 @@ exports.createListing = (req, res) => {
 			userErrors.push("Image file size cannot exceed 3 MB.");
 
 		if (userErrors.length >= 1) {
-			res.status(422).json({ userErrors });
+			return res.status(422).json({ userErrors });
 		} else {
 			// No unfilled required fields from this point on
 			// Generate a nice url string
@@ -93,16 +105,16 @@ exports.createListing = (req, res) => {
 					newListing.save((err, listing) => {
 						if (err) {
 							// Could happen if user did not fill out all fields, but we check for that earlier
-							res.status(400).json({
+							return res.status(400).json({
 								userErrors: ["Unknown error occured when creating listing."],
 								serverErrors: [err]
 							});
 						}
-						res.status(200).json(listing);
+						return res.status(200).json(listing);
 					});
 				})
 				.catch(function(err) {
-					res.status(400).json({
+					return res.status(400).json({
 						userErrors: ["Unknown error occured when uploading image."],
 						serverErrors: [err]
 					});
@@ -111,26 +123,18 @@ exports.createListing = (req, res) => {
 	});
 };
 
-// GET
-// exports.readListingByListingname = (req, res) => {
-// 	Listing.findOne({ Listingname: req.params.ListingID }, (err, listing) => {
-// 		if (err) res.status(400).send(err);
-// 		res.status(200).json(listing);
-// 	});
-// };
-
 // PUT
 // exports.updateListing = (req, res) => {
 // 	Listing.findOneAndUpdate({ _id: req.params.ListingId }, req.body, { new: true }, (err, listing) => {
-// 		if (err) res.status(400).send(err);
-// 		res.status(200).json(listing);
+// 		if (err) return res.status(400).send(err);
+// 		return res.status(200).json(listing);
 // 	});
 // };
 
 // DELETE
-exports.deleteListing = (req, res) => {
-	Listing.findOneAndDelete()({ _id: req.params.ListingId }, (err, deletedListing) => {
-		if (err) res.status(400).send(err);
-		res.status(200).json(deletedListing);
-	});
-};
+// exports.deleteListing = (req, res) => {
+// 	Listing.findOneAndDelete()({ _id: req.params.ListingId }, (err, deletedListing) => {
+// 		if (err) return res.status(400).send(err);
+// 		return res.status(200).json(deletedListing);
+// 	});
+// };

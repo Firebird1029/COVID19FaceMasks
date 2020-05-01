@@ -43,7 +43,7 @@ const routes = [
 		path: "/listing/:urlName",
 		name: "listing",
 		props: true,
-		meta: { requiresAuth: true },
+		meta: { requiresAuth: false },
 		component: () => import("@/views/Listing.vue")
 	},
 	{

@@ -5,39 +5,6 @@ const mongoose = require("mongoose"),
 
 // https://mongoosejs.com/docs/queries.html
 
-// GET
-exports.listAllUsers = (req, res) => {
-	User.find({}, (err, users) => {
-		if (err) res.status(400).send(err);
-		res.status(200).json(users);
-	});
-};
-
-// POST
-// exports.createUser = (req, res) => {
-// 	const newUser = new User(req.body);
-// 	newUser.save((err, user) => {
-// 		if (err) res.status(400).send(err);
-// 		res.status(200).json(user);
-// 	});
-// };
-
-// GET
-exports.readUser = (req, res) => {
-	User.findById(req.params.userID, (err, user) => {
-		if (err) res.status(400).send(err);
-		res.status(200).json(user);
-	});
-};
-
-// GET ---- ????????
-// exports.readUserByEmail = (req, res) => {
-// 	User.findOne({ email: req.params.userID }, (err, user) => {
-// 		if (err) res.status(400).send(err);
-// 		res.status(200).json(user);
-// 	});
-// };
-
 // PUT
 exports.updateUser = (req, res) => {
 	User.findOneAndUpdate({ _id: req.params.userId }, req.body, { new: true }, (err, user) => {
@@ -149,7 +116,7 @@ exports.loginUser = (req, res, next) => {
 	}
 };
 
-// Find Users -- ????
+// Find User via their JWT token
 exports.findUser = (req, res, next) => {
 	passport.authenticate("jwt", { session: false }, (err, user) => {
 		if (err || !user) {
