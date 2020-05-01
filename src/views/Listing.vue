@@ -16,9 +16,11 @@
 					span &nbsp; Report
 			.column
 				.has-text-centered: h1.title.is-3 {{ listing.name }}
+				br
 				p {{ listing.description }}
 				p.spacer
 				b-button(type="is-primary", expanded) Contact Now
+				p.spacer
 				p.spacer
 				p
 					span Handcrafted by&nbsp;
@@ -29,12 +31,7 @@
 </template>
 
 <style lang="scss" scoped>
-	.centerImage {
-		max-height: 100%;
-		width: auto !important;
-		margin-left: auto;
-		margin-right: auto;
-	}
+	//
 </style>
 
 <script>
