@@ -25,11 +25,13 @@ router.route("/login").post(userBuilder.loginUser);
 router.route("/findUser").get(userBuilder.findUser);
 
 // Listing Functionality
+// TODO jwt sign all these routes
 router
 	.route("/listings")
 	.get(listingBuilder.retrieveListings)
 	.post(listingBuilder.createListing);
 
+router.route("/listings/uploadImage").post(listingBuilder.editListing);
 router.route("/listings/:urlName").get(listingBuilder.getListing);
 
 module.exports = router;

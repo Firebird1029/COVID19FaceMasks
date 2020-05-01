@@ -11,7 +11,7 @@
 </style>
 
 <script>
-	import { mapState } from "vuex";
+	import { mapState, mapGetters } from "vuex";
 
 	export default {
 		components: {
@@ -22,7 +22,8 @@
 			return {};
 		},
 		computed: {
-			...mapState(["listings"])
+			...mapState(["listings"]),
+			...mapGetters(["refreshedServer"])
 		},
 		methods: {
 			refresh() {
@@ -31,7 +32,7 @@
 		},
 		mounted() {
 			// TODO move this to App.vue, return if logged in, else no
-			if (!this.listings.length) {
+			if (!this.refreshedServer) {
 				this.refresh();
 			}
 		}

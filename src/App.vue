@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		<NavBar />
+		<Navbar />
 		<article class="article">
 			<router-view :key="$route.fullPath" />
 		</article>
@@ -20,7 +20,7 @@
 
 	export default {
 		components: {
-			NavBar: () => import("@/components/NavBar.vue")
+			Navbar: () => import("@/components/NavBar.vue")
 		},
 		head: {
 			title: {

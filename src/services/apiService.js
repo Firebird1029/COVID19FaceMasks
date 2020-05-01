@@ -34,5 +34,8 @@ export default {
 	},
 	postNewListing(listing) {
 		return apiClient.post("/api/listings", listing);
+	},
+	uploadImageToListing(imagePayload) {
+		return apiClient.post("/api/listings/uploadImage", imagePayload);
 	}
 };

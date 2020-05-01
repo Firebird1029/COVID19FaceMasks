@@ -8,7 +8,7 @@
 				b-navbar-item(tag="router-link", :to="{ name: 'home' }") Home
 				b-navbar-item
 					span &nbsp;
-					b-autocomplete(v-model="searchText", v-show="listings.length", placeholder="Search", :data="fusedListings", field="item.name", @select="option => selectedSearchListing = option", clearable, icon="search", icon-pack="fad", rounded)
+					b-autocomplete(v-model="searchText", v-show="refreshedServer", placeholder="Search", :data="fusedListings", field="item.name", @select="option => selectedSearchListing = option", clearable, icon="search", icon-pack="fad", rounded)
 		template(slot="end")
 			template(v-if="loggedIn")
 				.level: .level-right
@@ -76,7 +76,7 @@
 		},
 		computed: {
 			...mapState(["user", "listings"]),
-			...mapGetters(["loggedIn"]),
+			...mapGetters(["loggedIn", "refreshedServer"]),
 			fusedListings() {
 				return new Fuse(this.listings, {
 					keys: ["name", "description", "sewerFirstName", "sewerLastName"]

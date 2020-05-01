@@ -1,7 +1,16 @@
 const mongoose = require("mongoose"),
 	passport = require("passport"),
 	jwt = require("jsonwebtoken"),
+	formidable = require("formidable"),
+	cloudinary = require("cloudinary").v2,
 	Listing = mongoose.model("Listing");
+
+// Setup Cloudinary
+cloudinary.config({
+	cloud_name: process.env.CLOUD_NAME,
+	api_key: process.env.CLOUD_API_KEY,
+	api_secret: process.env.CLOUD_API_SECRET
+});
 
 // https://mongoosejs.com/docs/queries.html
 
@@ -20,11 +29,8 @@ exports.retrieveListings = (req, res) => {
 // Get Listing -- GET
 exports.getListing = (req, res) => {
 	Listing.findOne({ urlName: req.params.urlName }, (err, listing) => {
-		if (err) {
-			res.status(400).json({ userErrors: ["Unknown error occured."] });
-		} else {
-			res.status(200).json(listing);
-		}
+		if (err) res.status(400).json({ userErrors: ["Unknown error occured."] });
+		res.status(200).json(listing);
 	});
 };
 
@@ -35,6 +41,7 @@ exports.createListing = (req, res) => {
 	if (!req.body.name) userErrors.push("Missing mask name.");
 	if (req.body.name && req.body.name.length > 0 && req.body.name.length < 7)
 		userErrors.push("Mask name is too short.");
+	if (req.body.description && req.body.description.length > 300) userErrors.push("Description is too long.");
 
 	if (userErrors.length >= 1) {
 		res.status(422).json({ userErrors });
@@ -54,8 +61,8 @@ exports.createListing = (req, res) => {
 		const newListing = new Listing({ ...req.body, urlName });
 		newListing.save((err, listing) => {
 			if (err) {
-				// i.e. not all required fields are filled out
-				res.status(400).json({ userErrors: ["Unknown error when signing up. Please refresh and try again."] });
+				// Could happen if user did not fill out all fields, but we check for that earlier
+				res.status(400).json({ userErrors: ["Unknown error occured when creating listing."] });
 			} else {
 				res.status(200).json(listing);
 			}
@@ -72,10 +79,56 @@ exports.createListing = (req, res) => {
 // };
 
 // PUT
-exports.updateListing = (req, res) => {
-	Listing.findOneAndUpdate({ _id: req.params.ListingId }, req.body, { new: true }, (err, listing) => {
-		if (err) res.status(400).send(err);
-		res.status(200).json(listing);
+// exports.updateListing = (req, res) => {
+// 	Listing.findOneAndUpdate({ _id: req.params.ListingId }, req.body, { new: true }, (err, listing) => {
+// 		if (err) res.status(400).send(err);
+// 		res.status(200).json(listing);
+// 	});
+// };
+
+// Edit Listing -- POST (later PUT)
+exports.editListing = (req, res) => {
+	const form = formidable({ multiples: true });
+
+	form.parse(req, (err, formFields, formFiles) => {
+		if (err) {
+			console.log(err);
+			res.status(400).json({ userErrors: ["Unknown error occured when uploading image."] });
+		} else {
+			const listing = JSON.parse(formFields.listingData);
+
+			// Upload Image to Cloudinary
+			cloudinary.uploader
+				.upload(formFiles.imageFile.path, {
+					tags: "uploadV1.0.0", // arbitrary tag
+					context: {
+						// caption/alt are title/description, others are custom key: value
+						caption: encodeURI(listing.name),
+						listingID: encodeURI(listing._id),
+						sewerID: encodeURI(listing.sewerID),
+						sewerEmail: encodeURI(listing.sewerEmail),
+						urlName: encodeURI(listing.urlName)
+					}
+				})
+				.then(function(image) {
+					// image.url, image.public_id
+
+					// Store url to image on Cloudinary to MongoDB
+					Listing.findOneAndUpdate(
+						{ _id: listing._id }, // Find listing by its ID, passed as a "field" in the form-data
+						{ img: image.url }, // The data to change in the document
+						{ new: true }, // Return the new document
+						(err, listing) => {
+							if (err)
+								res.status(400).json({ userErrors: ["Unknown error occured when uploading image."] });
+							res.sendStatus(200);
+						}
+					);
+				})
+				.catch(function(err) {
+					res.status(400).json({ userErrors: ["Unknown error occured when uploading image."] });
+				});
+		}
 	});
 };
 

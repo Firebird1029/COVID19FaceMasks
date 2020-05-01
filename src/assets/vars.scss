@@ -59,3 +59,8 @@ $link-focus-border: $primary;
 // Import Bulma and Buefy styles (do this after defining vars)
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
+
+// Global Styling
+p.spacer {
+	margin-bottom: 3rem;
+}
