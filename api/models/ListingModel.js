@@ -8,11 +8,11 @@ const listingSchema = new Schema({
 	},
 	img: {
 		type: String,
-		required: false
+		required: true
 	},
 	imgID: {
 		type: String,
-		required: false
+		required: true
 	},
 	description: {
 		type: String,

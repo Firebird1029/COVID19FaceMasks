@@ -2,16 +2,17 @@
 	section.section.createListingContainer
 		form.createListingForm(@submit.prevent="listingFormSubmitted", style="width: 60%; margin-left: 20%")
 			b-field(label="Mask Name(s)", :type="{'is-danger': nameErrors.length }", :message="nameErrors")
-				b-input(v-model="listing.name", type="text", placeholder="", maxlength="40", :disabled="isLoading")
+				b-input(v-model="listing.name", type="text", placeholder="", maxlength="40", :disabled="isLoading", required)
 			b-field(label="Upload Image", :type="{'is-danger': imgErrors.length }", :message="imgErrors")
-				b-upload(v-model="fileUpload", ref="fileUpload", @change="handleFileUpload()", drag-drop, accept="image/*", :disabled="isLoading")
+				b-upload(v-model="fileUpload", ref="fileUpload", @change="handleFileUpload()", drag-drop, accept="image/*", :disabled="isLoading", required)
 					section.section
 						.content.has-text-centered
 							p: b-icon(icon="upload", size="is-large", pack="fas")
 							p Drop your files here or click to upload
+			b-tag(v-show="fileUpload") {{ fileUpload ? fileUpload.name : "" }}
+			p.spacer
 			b-field(label="Description", :type="{'is-danger': descErrors.length }", :message="(descErrors.length) ? descErrors : '(Optional)'")
 				b-input(v-model="listing.description", type="textarea", name="description", placeholder="", maxlength="300", :disabled="isLoading")
-			br
 			b-field
 				p.control.has-text-centered
 					input.button.is-primary(type="submit", name="submit", value="Post", :disabled="isLoading")
@@ -72,58 +73,32 @@
 				this.isLoading = true;
 				let loadingComponent = this.$buefy.loading.open();
 
+				let formData = new FormData();
+				formData.append("imageFile", this.fileUpload);
+				formData.append("listingFormData", JSON.stringify(this.listing));
+
 				// Vuex action to send to database
 				this.$store
-					.dispatch("createNewListing", this.listing)
+					.dispatch("createNewListing", formData)
 					.then((newListing) => {
-						// Upload Image Next (Separate API Endpoint)
-						let imageData = new FormData();
-						imageData.append("imageFile", this.fileUpload);
-						imageData.append("listingData", JSON.stringify(newListing));
+						// Show Success Notification
+						this.$buefy.snackbar.open({
+							duration: 3000,
+							message: "Listing created successfully!",
+							type: "is-success",
+							position: "is-top-right"
+						});
+						loadingComponent.close();
 
-						// Call the api service directly
-						apiService
-							.uploadImageToListing(imageData)
-							.then(() => {
-								loadingComponent.close();
+						// Push to router
+						this.$router.push({
+							name: "listing",
+							params: { urlName: newListing.urlName }
+						});
 
-								// Show Success Notification
-								this.$buefy.snackbar.open({
-									duration: 3000,
-									message: "Listing created successfully!",
-									type: "is-success",
-									position: "is-top-right"
-								});
-
-								// Fetch listings because the new image in the database isn't updated in the Vuex store
-								this.$store.dispatch("fetchListings").then(() => {
-									// Push to router
-									this.$router.push({
-										name: "listing",
-										params: { urlName: newListing.urlName }
-									});
-
-									// No need to clear listing, user will be redirected anyway
-									// this.isLoading = false;
-									// this.listing = this.generateBlankListing();
-								});
-							})
-							.catch((err) => {
-								// Error when uploading image via Cloudinary
-								this.errors = errData.userErrors;
-								this.serverErrors = errData.serverErrors;
-
-								if (this.internalErrors.length) {
-									this.$buefy.snackbar.open({
-										duration: 3000,
-										message: this.internalErrors,
-										type: "is-danger",
-										position: "is-top-right"
-									});
-								}
-								loadingComponent.close();
-								this.isLoading = false;
-							});
+						// No need to clear listing, user will be redirected anyway
+						// this.isLoading = false;
+						// this.listing = this.generateBlankListing();
 					})
 					.catch((errData) => {
 						// Errors, i.e. user did not fill out all fields
