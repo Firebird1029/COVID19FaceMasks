@@ -57,6 +57,48 @@ exports.updateUser = (req, res, next) => {
 	})(req, res, next);
 };
 
+// Change Password -- POST
+exports.changePassword = (req, res, next) => {
+	const userErrors = [];
+	// Make sure user filled out all required fields
+	if (!req.body.oldPassword) userErrors.push("Missing password.&ensp;");
+	if (!req.body.newPassword) userErrors.push("Missing new password.&emsp;");
+	if (!req.body.newPasswordConfirm) userErrors.push("Missing new password.&thinsp;");
+	if (req.body.newPassword && req.body.newPassword.length < 7)
+		userErrors.push("Please choose a longer password.&emsp;");
+	else if (req.body.oldPassword && req.body.newPassword && req.body.oldPassword === req.body.newPassword)
+		userErrors.push("Please choose a password different than your previous one.&emsp;");
+	if (req.body.newPassword && req.body.newPasswordConfirm && req.body.newPassword !== req.body.newPasswordConfirm)
+		userErrors.push("New passwords do not match.&thinsp;");
+
+	// If no user errors, proceed to change password
+	if (userErrors.length >= 1) {
+		return res.status(422).json({ userErrors });
+	} else {
+		passport.authenticate("changePassword", (err, user) => {
+			if (err) {
+				// If user not found in database or password incorrect. These errors come from passportConfig.js
+				return res.status(401).json({ userErrors: [err.message], serverErrors: [err] });
+			} else {
+				req.login(user, (reqErr) => {
+					if (reqErr) {
+						console.log("Error in req.login in exports.changePassword in userController.js", reqErr);
+						return res.status(400).json({
+							userErrors: ["Unknown error occured when changing password."]
+						});
+					} else {
+						return res.status(200).json({
+							auth: true,
+							token: req.headers["authorization"].slice(7),
+							user
+						});
+					}
+				});
+			}
+		})(req, res, next);
+	}
+};
+
 // DELETE
 exports.deleteUser = (req, res) => {
 	User.findOneAndDelete()({ _id: req.params.userId }, (err, deletedUser) => {

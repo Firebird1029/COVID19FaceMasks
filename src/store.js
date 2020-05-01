@@ -80,10 +80,24 @@ export default new Vuex.Store({
 					});
 			});
 		},
-		updateUser({ commit }, userData) {
+		updateUser({ commit }, profileData) {
 			return new Promise((resolve, reject) => {
 				apiService
-					.updateUser(userData)
+					.updateUser(profileData)
+					.then((res) => {
+						// Store user data
+						commit("SET_SESSION_USER_DATA", res.data);
+						resolve(res.data.user);
+					})
+					.catch((err) => {
+						reject(err.response.data);
+					});
+			});
+		},
+		changePassword({ commit }, userData) {
+			return new Promise((resolve, reject) => {
+				apiService
+					.changePassword(userData)
 					.then((res) => {
 						// Store user data
 						commit("SET_SESSION_USER_DATA", res.data);

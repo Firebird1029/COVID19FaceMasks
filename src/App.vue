@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
 		<Navbar />
-		<article class="article" style="max-width: 70rem; margin-left: auto; margin-right: auto;">
+		<article class="article" style="max-width: 80rem; margin-left: auto; margin-right: auto;">
 			<router-view :key="$route.fullPath" />
 		</article>
 	</div>

@@ -85,7 +85,62 @@ passport.use(
 	)
 );
 
-const opts = {
+passport.use(
+	"changePassword",
+	new localStrategy(
+		{
+			usernameField: "email",
+			passwordField: "oldPassword",
+			session: false,
+			passReqToCallback: true
+		},
+		(req, email, password, done) => {
+			User.findOne({ email })
+				.then((user) => {
+					if (!user) {
+						// User not found. Should not be possible.
+						return done({ message: "Unknown error occured." }, false);
+					} else {
+						bcrypt
+							.compare(password, user.password)
+							.then((response) => {
+								if (!response) {
+									// Password incorrect.
+									return done({ message: "Incorrect password.&ensp;" }, false);
+								}
+
+								// Encrypt new password.
+								bcrypt.genSalt(Number(process.env.BCRYPT_SALT_ROUNDS), (err, salt) => {
+									if (err) console.log("Error generating salt in passportConfig.js", err);
+									bcrypt.hash(req.body.newPassword, salt, (err, hashedPassword) => {
+										if (err) console.log("Error generating hash in passportConfig.js", err);
+
+										// Update document in Passport
+										User.findOneAndUpdate({ email }, { password: hashedPassword }, { new: true })
+											.then((newUserData) => {
+												return done(null, newUserData);
+											})
+											.catch((err) => {
+												console.log(
+													"Error in User.findOneAndUpdate in changePassword in passportConfig.js",
+													err
+												);
+												return done(err, false);
+											});
+									});
+								});
+							})
+							.catch((err) =>
+								console.log("Error in bcrypt.compare in changePassword in passportConfig.js", err)
+							);
+					}
+				})
+				.catch((err) => console.log("Error in User.findOne in changePassword in passportConfig.js", err));
+		}
+	)
+);
+
+const jwtOptions = {
 	// jwtFromRequest: ExtractJWT.fromAuthHeaderWithScheme("JWT"),
 	jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
 	secretOrKey: process.env.JWT_SECRET
@@ -93,7 +148,7 @@ const opts = {
 
 passport.use(
 	"jwt",
-	new JWTstrategy(opts, (jwt_payload, done) => {
+	new JWTstrategy(jwtOptions, (jwt_payload, done) => {
 		User.findOne({ email: jwt_payload.id })
 			.then((user) => {
 				if (user) {

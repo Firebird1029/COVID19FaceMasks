@@ -13,6 +13,7 @@ router.route("/login").post(userBuilder.loginUser);
 router
 	.route("/thisUser")
 	.get(userBuilder.findUser)
+	.post(userBuilder.changePassword)
 	.put(userBuilder.updateUser);
 
 // Listing Functionality

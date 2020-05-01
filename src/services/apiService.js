@@ -23,8 +23,11 @@ export default {
 	fetchUserData() {
 		return apiClient.get("/api/thisUser");
 	},
-	updateUser(userData) {
-		return apiClient.put("/api/thisUser", userData);
+	updateUser(profileData) {
+		return apiClient.put("/api/thisUser", profileData);
+	},
+	changePassword(userData) {
+		return apiClient.post("/api/thisUser", userData);
 	},
 	// getPublicUsers() {
 	// 	return apiClient.get("/api/users");
