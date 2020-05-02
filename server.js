@@ -2,6 +2,16 @@ const debug = !process.env.NODE_ENV;
 console.log("Environment: ", process.env.NODE_ENV || "dev");
 console.log("Debugging: ", debug);
 
+/*
+ * Resources
+ * https://alohanotcorona.org/index.html
+ * https://www.signupgenius.com/go/30e0b49aaac2ea7fd0-mask
+ * https://docs.google.com/forms/d/e/1FAIpQLSfxPf6V3TXWffLbcaZFkipUAr1qu2k-hVYfix2ZS17ReAFxtw/viewform
+ * https://www.facebook.com/groups/Masks4Hawaii
+ * https://alohamask.org/resources/
+ * https://www.masks4hi.com/
+ */
+
 const express = require("express"),
 	app = express(),
 	server = app.listen(process.env.PORT || process.argv[2] || 3000, () => {
