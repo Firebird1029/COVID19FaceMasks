@@ -23,9 +23,9 @@
 			Navbar: () => import("@/components/NavBar.vue")
 		},
 		head: {
-			title: {
-				inner: "Face Masks"
-			},
+			// title: {
+			// 	inner: "Face Masks"
+			// },
 			// Meta tags
 			meta: [
 				// { name: "application-name", content: "Name of my application" },

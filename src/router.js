@@ -9,48 +9,51 @@ const routes = [
 		// TODO change /home to / then add meta needs auth, then call next() if not logged in
 		path: "/home",
 		name: "home",
-		meta: { requiresAuth: true },
+		meta: { title: "Home", requiresAuth: true },
 		component: () => import("@/views/Home.vue")
 	},
 	{
 		path: "/",
 		name: "launch",
+		meta: { title: "Home" },
 		component: () => import("@/views/Launch.vue")
 	},
 	{
 		path: "/login",
 		name: "login",
+		meta: { title: "Login" },
 		component: () => import("@/views/Login.vue")
 	},
 	{
 		path: "/register",
 		name: "register",
+		meta: { title: "Register" },
 		component: () => import("@/views/Register.vue")
 	},
 	{
 		path: "/my-masks",
 		name: "my-listings",
-		meta: { requiresAuth: true },
+		meta: { title: "My Listings", requiresAuth: true },
 		component: () => import("@/views/MyListings.vue")
 	},
 	{
 		path: "/listing/create",
 		name: "create-listing",
-		meta: { requiresAuth: true },
+		meta: { title: "Create Listing", requiresAuth: true },
 		component: () => import("@/views/CreateListing.vue")
 	},
 	{
 		path: "/listing/:urlName",
 		name: "listing",
 		props: true,
-		meta: { requiresAuth: false },
+		meta: { title: "Listing", requiresAuth: false },
 		component: () => import("@/views/Listing.vue")
 	},
 	{
 		path: "/edit-profile",
 		name: "edit-profile",
 		props: true,
-		meta: { requiresAuth: true },
+		meta: { title: "Profile", requiresAuth: true },
 		component: () => import("@/views/EditProfile.vue")
 	},
 	// {
@@ -79,6 +82,10 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+	// Add Document Title
+	document.title = (to.meta.title ? to.meta.title + " - " : "") + "Face Masks";
+
+	// Auth
 	const loggedIn = localStorage.getItem("savedUserData");
 	if (to.matched.some((record) => record.meta.requiresAuth) && !loggedIn) {
 		// Auth required for this route, and user DOES NOT have auth
