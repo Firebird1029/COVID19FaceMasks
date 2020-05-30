@@ -15,7 +15,7 @@ export default new Vuex.Store({
 			return state.auth;
 		},
 		refreshedServer: (state) => {
-			return state.listings.length > 2;
+			return state.listings.length > 0;
 		},
 		getStateListingByURL: (state) => (urlName) => {
 			return state.listings.find((listing) => listing.urlName === urlName);

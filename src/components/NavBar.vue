@@ -2,7 +2,7 @@
 	b-navbar#nav.navContainer
 		template(slot="brand")
 			b-navbar-item(tag="router-link", :to="{ path: '/' }")
-				img(src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png", alt="")
+				img.brandImage(src="/facemask.png", alt="")
 		template(slot="start")
 			template(v-if="loggedIn")
 				b-navbar-item(tag="router-link", :to="{ name: 'home' }") Home
@@ -45,6 +45,11 @@
 		padding: 1rem;
 		.router-link-exact-active:not(.is-primary) {
 			color: $primary;
+		}
+
+		// Enlarge navbar brand image
+		img.brandImage {
+			max-height: 2.5rem;
 		}
 
 		// Fix dropdown styling against Buefy

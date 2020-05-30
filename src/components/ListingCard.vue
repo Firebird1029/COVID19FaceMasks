@@ -1,5 +1,5 @@
 <template lang="pug">
-	.listingCard.tile.is-parent.is-2
+	.listingCard.tile.is-parent.is-3
 		article.tile.is-child.card
 				//- Header 
 				//- header.card-header
