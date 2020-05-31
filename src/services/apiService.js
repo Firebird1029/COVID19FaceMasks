@@ -46,5 +46,8 @@ export default {
 	},
 	uploadImageToListing(imagePayload) {
 		return apiClient.post("/api/listings/uploadImage", imagePayload);
+	},
+	deleteListing(urlName) {
+		return apiClient.delete("/api/listings/" + urlName);
 	}
 };

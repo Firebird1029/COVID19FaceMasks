@@ -25,7 +25,14 @@
 				p
 					span Handcrafted by&nbsp;
 					strong {{ listing.sewerFirstName }} {{ listing.sewerLastName }}
-				p.spacer
+				div(v-if="ownsThisListing")
+					p.spacer
+					p.spacer
+					p.spacer
+					hr
+					.columns
+						.column: b-button(type="is-outlined", expanded, @click="editListing", :disabled="processing") Edit
+						.column: b-button(type="is-danger", expanded, @click="deleteListing", :disabled="processing") Delete
 				//- p Other masks by {{ listing.sewerFirstName }}:
 
 </template>
@@ -40,8 +47,14 @@
 		props: ["urlName"],
 		data() {
 			return {
-				listing: {}
+				listing: {},
+				processing: false
 			};
+		},
+		computed: {
+			ownsThisListing() {
+				return this.listing.sewerID === this.$store.state.user._id;
+			}
 		},
 		methods: {
 			likeFeature() {
@@ -73,9 +86,43 @@
 			},
 			reportListing() {
 				// TODO
+			},
+			editListing() {
+				this.$buefy.snackbar.open({
+					duration: 3000,
+					message: "Coming soon!",
+					type: "is-primary",
+					position: "is-top-right",
+					queue: false
+				});
+			},
+			deleteListing() {
+				this.processing = true;
+				this.$store
+					.dispatch("deleteListing", this.listing.urlName)
+					.then(() => {
+						this.$buefy.snackbar.open({
+							duration: 3000,
+							message: "Listing removed successfully!",
+							type: "is-success",
+							position: "is-top-right"
+						});
+						this.$router.push({ name: "home" });
+					})
+					.catch((err) => {
+						console.log(err);
+						this.$buefy.snackbar.open({
+							duration: 3000,
+							message: "Unknown error occured while removing listing.",
+							type: "is-danger",
+							position: "is-top-right"
+						});
+
+						this.processing = true;
+					});
 			}
 		},
-		created() {
+		mounted() {
 			this.$store
 				.dispatch("fetchOneListingByURL", this.urlName)
 				.then((fetchedListing) => {

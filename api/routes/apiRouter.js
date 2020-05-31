@@ -20,12 +20,13 @@ router
 // TODO jwt sign all these routes
 router
 	.route("/listings")
-	.all(listingBuilder.confirmLoggedIn)
+	.all(userBuilder.confirmLoggedIn)
 	.get(listingBuilder.retrieveListings)
 	.post(listingBuilder.createListing);
 router
 	.route("/listings/:urlName")
 	.get(listingBuilder.getListing)
-	.all(listingBuilder.confirmLoggedIn);
+	.all(userBuilder.confirmLoggedIn) // All routes after this must be authorized
+	.delete(listingBuilder.deleteListing);
 
 module.exports = router;

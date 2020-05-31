@@ -14,20 +14,6 @@ cloudinary.config({
 
 // https://mongoosejs.com/docs/queries.html
 
-// Confirm Logged In -- Middleware (to confirm that user has valid JWT token before getting/putting listings from/to database)
-exports.confirmLoggedIn = (req, res, next) => {
-	const jwtToken = req.headers["authorization"] ? req.headers["authorization"].slice(7) : null; // Remove word "Bearer "
-	if (!jwtToken) return res.status(401).json({ auth: false, message: "User not logged in." });
-
-	jwt.verify(jwtToken, process.env.JWT_SECRET, function(err, decoded) {
-		if (err) {
-			return res.status(500).json({ auth: false, message: "Failed to authenticate user.", err });
-		} else {
-			next();
-		}
-	});
-};
-
 // Retrieve/Fetch Listings -- GET
 exports.retrieveListings = (req, res) => {
 	Listing.find({}, (err, listings) => {
@@ -133,10 +119,29 @@ exports.createListing = (req, res) => {
 // 	});
 // };
 
-// DELETE
-// exports.deleteListing = (req, res) => {
-// 	Listing.findOneAndDelete()({ _id: req.params.ListingId }, (err, deletedListing) => {
-// 		if (err) return res.status(400).send(err);
-// 		return res.status(200).json(deletedListing);
-// 	});
-// };
+// Delete Listing -- DELETE
+exports.deleteListing = (req, res) => {
+	// Confirm user owns this listing via their JWT token
+	const jwtToken = req.headers["authorization"] ? req.headers["authorization"].slice(7) : null; // Remove word "Bearer "
+	if (!jwtToken) return res.status(401).json({ auth: false, message: "User not logged in." });
+
+	jwt.verify(jwtToken, process.env.JWT_SECRET, function(err, decoded) {
+		if (err) {
+			return res.status(401).json({ auth: false, message: "Failed to authenticate user.", err });
+		} else {
+			console.log(decoded);
+			Listing.findOne({ urlName: req.params.urlName }, (err, matchedListing) => {
+				if (err || !matchedListing) return res.status(400).send(err);
+				if (decoded.id === matchedListing.sewerEmail) {
+					// JWT user matches listing's sewer email
+					Listing.findOneAndDelete({ urlName: req.params.urlName }, (err, deletedListing) => {
+						if (err) return res.status(400).send(err);
+						return res.status(200).json(deletedListing);
+					});
+				} else {
+					return res.sendStatus(401);
+				}
+			});
+		}
+	});
+};

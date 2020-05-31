@@ -37,6 +37,11 @@ export default new Vuex.Store({
 		},
 		SET_LISTINGS(state, listings) {
 			state.listings = listings;
+		},
+		REMOVE_LISTING(state, removedListing) {
+			state.listings = state.listings.filter((listing) => {
+				listing._id !== removedListing._id;
+			});
 		}
 	},
 	actions: {
@@ -142,6 +147,16 @@ export default new Vuex.Store({
 						.catch((err) => reject(err.response.data));
 				}
 			});
+		},
+		deleteListing({ commit }, urlName) {
+			return apiService
+				.deleteListing(urlName)
+				.then((res) => {
+					commit("REMOVE_LISTING", res.data);
+				})
+				.catch((err) => {
+					throw err.response.data;
+				});
 		}
 	},
 	modules: {}

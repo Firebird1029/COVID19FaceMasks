@@ -6,7 +6,7 @@
 			.columns
 				.column
 					b-field(label="Upload Image", :type="{'is-danger': imgErrors.length }", :message="imgErrors")
-						b-upload(v-model="fileUpload", @input="handleFileUpload", drag-drop, accept="image/*", :disabled="isLoading", required)
+						b-upload(v-model="fileUpload", @input="handleFileUpload", drag-drop, accept="image/*", :disabled="isLoading")
 							section.section
 								.content.has-text-centered
 									p: b-icon(icon="upload", size="is-large", pack="fas")

@@ -5,6 +5,20 @@ const mongoose = require("mongoose"),
 
 // https://mongoosejs.com/docs/queries.html
 
+// Confirm Logged In -- Middleware (to confirm that user has valid JWT token before getting/putting listings from/to database)
+exports.confirmLoggedIn = (req, res, next) => {
+	const jwtToken = req.headers["authorization"] ? req.headers["authorization"].slice(7) : null; // Remove word "Bearer "
+	if (!jwtToken) return res.status(401).json({ auth: false, message: "User not logged in." });
+
+	jwt.verify(jwtToken, process.env.JWT_SECRET, function(err, decoded) {
+		if (err) {
+			return res.status(500).json({ auth: false, message: "Failed to authenticate user.", err });
+		} else {
+			next();
+		}
+	});
+};
+
 // Find User via their JWT token -- GET
 exports.findUser = (req, res, next) => {
 	passport.authenticate("jwt", { session: false }, (err, user) => {
