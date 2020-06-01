@@ -46,6 +46,7 @@ app.set("view engine", "pug");
 app.use(express.static(__dirname + "/public"));
 app.use("/api", router);
 app.use(history());
+app.use(express.static(__dirname + "/dist"));
 
 // MongoDB Code
 mongoose.Promise = global.Promise;
