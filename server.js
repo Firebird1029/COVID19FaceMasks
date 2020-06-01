@@ -30,7 +30,8 @@ require("./api/config/passportConfig.js");
 
 // Models & Express Router
 const User = require("./api/models/UserModel"),
-	router = require("./api/routes/apiRoutes.js");
+	Listing = require("./api/models/ListingModel"),
+	router = require("./api/routes/apiRouter.js");
 
 // Setup Express Middleware
 debug && app.use(morgan("dev"));
@@ -49,6 +50,7 @@ app.use(history());
 // MongoDB Code
 mongoose.Promise = global.Promise;
 mongoose.set("useFindAndModify", false);
+mongoose.set("useCreateIndex", true); // https://github.com/Automattic/mongoose/issues/6890
 mongoose.connect(process.env.MONGO_URL, { useUnifiedTopology: true, useNewUrlParser: true });
 mongoose.set("debug", debug);
 
@@ -60,3 +62,22 @@ db.once("open", (_) => {
 db.on("error", (err) => {
 	debug && console.error("Database connection error:", err);
 });
+
+// using Twilio SendGrid's v3 Node.js Library -- TODO
+// https://github.com/sendgrid/sendgrid-nodejs
+// const sgMail = require("@sendgrid/mail");
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+// const msg = {
+// 	to: "brandon.yee150@gmail.com",
+// 	from: "byee20@punahou.edu",
+// 	subject: "Sending with Twilio SendGrid is Fun",
+// 	text: "and easy to do anywhere, even with Node.js",
+// 	html: "<strong>and easy to do anywhere, even with Node.js</strong>"
+// };
+// sgMail
+// 	.send(msg, (err, result) => {
+// 		console.log("err1", JSON.stringify(err));
+// 		console.log("result1", result);
+// 	})
+// 	.catch((err) => console.log("err", err));
+// console.log(process.env.SENDGRID_API_KEY);

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-	baseURL: "http://localhost:3000",
+	baseURL: process.env.VUE_APP_BASE_URL,
 	withCredentials: false, // This is the default
 	headers: {
 		Accept: "application/json",
@@ -10,10 +10,44 @@ const apiClient = axios.create({
 });
 
 export default {
-	getPublicUsers() {
-		return apiClient.get("/api/users");
+	setAxiosBearerHeader(bearerToken) {
+		// https://github.com/axios/axios/issues/209
+		apiClient.defaults.headers["Authorization"] = `Bearer ${bearerToken}`;
 	},
-	getUserByID(id) {
-		return apiClient.get("/api/users/" + id);
+	register(accountInfo) {
+		return apiClient.post("/api/register", accountInfo);
+	},
+	login(credentialsInfo) {
+		return apiClient.post("/api/login", credentialsInfo);
+	},
+	fetchUserData() {
+		return apiClient.get("/api/thisUser");
+	},
+	updateUser(profileData) {
+		return apiClient.put("/api/thisUser", profileData);
+	},
+	changePassword(userData) {
+		return apiClient.post("/api/thisUser", userData);
+	},
+	// getPublicUsers() {
+	// 	return apiClient.get("/api/users");
+	// },
+	// getUserByID(id) {
+	// 	return apiClient.get("/api/users/" + id);
+	// },
+	getListings() {
+		return apiClient.get("/api/listings");
+	},
+	getListingByURL(url) {
+		return apiClient.get("/api/listings/" + url);
+	},
+	postNewListing(listing) {
+		return apiClient.post("/api/listings", listing);
+	},
+	uploadImageToListing(imagePayload) {
+		return apiClient.post("/api/listings/uploadImage", imagePayload);
+	},
+	deleteListing(urlName) {
+		return apiClient.delete("/api/listings/" + urlName);
 	}
 };

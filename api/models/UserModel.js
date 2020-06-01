@@ -2,29 +2,30 @@ const mongoose = require("mongoose"),
 	Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-	username: {
+	email: {
 		type: String,
-		required: true
+		required: true,
+		unique: true
 	},
 	password: {
 		type: String,
 		required: true
 	},
-	email: {
-		type: String,
-		required: false // TODO change to true
-	},
 	firstName: {
 		type: String,
-		required: false // TODO change to true
+		required: true
 	},
 	lastName: {
 		type: String,
-		required: false // TODO change to true
+		required: true
 	},
 	phone: {
 		type: String,
-		required: false // TODO change to true
+		required: true
+	},
+	joinDate: {
+		type: Date,
+		default: Date.now
 	}
 });
 

@@ -1,8 +1,8 @@
 <template lang="pug">
-	section.section.homeContainer
+	section.section.myListingsContainer
 		.tile.is-ancestor(style="flex-wrap: wrap;")
 			//- https://stackoverflow.com/questions/42931638/how-to-make-tiles-wrap-with-bulma-css
-			ListingCard(v-for="listing in listings", :key="listing._id", :listing="listing")
+			ListingCard(v-for="listing in listings.filter((el) => el.sewerID === user._id)", :key="listing._id", :listing="listing")
 
 </template>
 
@@ -22,18 +22,14 @@
 			return {};
 		},
 		computed: {
-			...mapState(["listings"]),
+			...mapState(["user", "listings"]),
 			...mapGetters(["refreshedServer"])
 		},
-		methods: {
-			refresh() {
-				this.$store.dispatch("fetchListings").catch((err) => console.log(err)); // TODO error management
-			}
-		},
+		methods: {},
 		mounted() {
 			// TODO move this to App.vue, return if logged in, else no
 			if (!this.refreshedServer) {
-				this.refresh();
+				this.$store.dispatch("fetchListings");
 			}
 		}
 	};
