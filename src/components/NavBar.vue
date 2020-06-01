@@ -1,8 +1,12 @@
 <template lang="pug">
 	b-navbar#nav.navContainer
 		template(slot="brand")
-			b-navbar-item(tag="router-link", :to="{ path: '/' }")
-				img.brandImage(src="/facemask.png", alt="")
+			template(v-if="loggedIn")
+				b-navbar-item(tag="router-link", :to="{ name: 'home' }")
+					img.brandImage(src="/facemask.png", alt="")
+			template(v-else)
+				b-navbar-item(tag="router-link", :to="{ path: '/' }")
+					img.brandImage(src="/facemask.png", alt="")
 		template(slot="start")
 			template(v-if="loggedIn")
 				b-navbar-item(tag="router-link", :to="{ name: 'home' }") Home

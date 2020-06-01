@@ -19,11 +19,12 @@
 				br
 				p {{ listing.description }}
 				p.spacer
-				b-button(type="is-primary", expanded) Contact Now
+				b-button(type="is-primary", expanded, @click="contactNow") Contact Now
 				p.spacer
 				p.spacer
 				p
-					span Handcrafted by&nbsp;
+					//- Checkbox if handcrafted
+					span Posted by&nbsp;
 					strong {{ listing.sewerFirstName }} {{ listing.sewerLastName }}
 				div(v-if="ownsThisListing")
 					p.spacer
@@ -31,10 +32,20 @@
 					p.spacer
 					hr
 					.columns
-						.column: b-button(type="is-outlined", expanded, @click="editListing", :disabled="processing") Edit
+						//- TODO -- add Edit functionality
+						//- .column: b-button(type="is-outlined", expanded, @click="editListing", :disabled="processing") Edit
 						.column: b-button(type="is-danger", expanded, @click="deleteListing", :disabled="processing") Delete
+				//- TODO
 				//- p Other masks by {{ listing.sewerFirstName }}:
-
+		b-modal(:active.sync="contacNowModalActive", has-modal-card, trap-focus, scroll="keep")
+			.modal-card(style="width: auto;")
+				header.modal-card-head
+					p.modal-card-title {{ listing.sewerFirstName }} {{ listing.sewerLastName }}
+				section.modal-card-body(style="min-width: 50rem;")
+					p {{ listing.sewerEmail }}
+					p.spacer
+				footer.modal-card-foot
+					button.button(type="button", @click="contacNowModalActive = false;") Close
 </template>
 
 <style lang="scss" scoped>
@@ -48,7 +59,8 @@
 		data() {
 			return {
 				listing: {},
-				processing: false
+				processing: false,
+				contacNowModalActive: false
 			};
 		},
 		computed: {
@@ -57,6 +69,9 @@
 			}
 		},
 		methods: {
+			contactNow() {
+				this.contacNowModalActive = true;
+			},
 			likeFeature() {
 				this.$buefy.snackbar.open({
 					duration: 3000,

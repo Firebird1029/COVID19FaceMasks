@@ -15,13 +15,15 @@
 						p.title.is-5.limitOneLine: strong: router-link.has-text-dark(:to="route") {{ listing.name }}
 						.content.limitContentLines: router-link.has-text-dark(:to="route") {{ listing.description }}
 						.media
-							.media-left
-								figure.image.is-48x48
-									img(src="https://bulma.io/images/placeholders/96x96.png", alt="Placeholder image")
+							//- TODO add user profile
+							//- .media-left
+							//- 	figure.image.is-48x48
+							//- 		img(src="https://bulma.io/images/placeholders/96x96.png", alt="Placeholder image")
 							.media-content
 								p.limitOneLine: strong {{ listing.sewerFirstName }} {{ listing.sewerLastName }}
 							p.limitOneLine(style="font-size: 0.8rem") {{ sewerDetails }}
-				footer.card-footer
+				//- TODO add footer
+				//- footer.card-footer
 					a.card-footer-item.has-text-centered.has-text-danger(@click="likeFeature"): b-icon(icon="heart", pack="far")
 					a.card-footer-item.has-text-centered.has-text-dark(@click="commentFeature"): b-icon(icon="comment", pack="far")
 					a.card-footer-item.has-text-centered.has-text-dark(@click="shareFeature"): b-icon(icon="share-alt", pack="fad")
