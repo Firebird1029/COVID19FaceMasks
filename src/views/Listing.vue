@@ -19,7 +19,7 @@
 				br
 				p {{ listing.description }}
 				p.spacer
-				b-button(type="is-primary", expanded, @click="contactNow") Contact Now
+				b-button(type="is-primary", expanded, @click="contactNow", v-if="!ownsThisListing") Contact Now
 				p.spacer
 				p.spacer
 				p

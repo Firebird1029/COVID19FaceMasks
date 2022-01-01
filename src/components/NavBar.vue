@@ -95,6 +95,9 @@
 		methods: {
 			logout() {
 				this.$store.dispatch("logout");
+				this.$router.push({
+					path: "/"
+				});
 			}
 		},
 		watch: {

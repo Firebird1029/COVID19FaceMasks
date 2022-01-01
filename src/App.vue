@@ -66,7 +66,8 @@
 				// with shorthand
 				// { t: "application/ld+json", i: '{ "@context": "http://schema.org" }' }
 				// ...
-				{ src: "https://kit.fontawesome.com/5f3bd4bd8e.js", crossorigin: "anonymous", async: true }
+				// { src: "https://kit.fontawesome.com/5f3bd4bd8e.js", crossorigin: "anonymous", async: true }
+				{ src: "/fa-all.min.js", async: true, body: true }
 			],
 			style: [
 				// { type: "text/css", inner: "body { background-color: #000; color: #fff}", undo: false }

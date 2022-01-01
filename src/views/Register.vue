@@ -15,7 +15,7 @@
 			br
 			b-field
 				b-checkbox(v-model="acceptTerms")
-					span I agree to the #[a(href="/terms") terms and conditions]
+					span I agree to the #[a(href="/terms", target="_blank") terms and conditions]
 			br
 			b-field
 				p.control.has-text-centered

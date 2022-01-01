@@ -1,6 +1,7 @@
 <template lang="pug">
 	.listingCard.tile.is-parent.is-3
 		article.tile.is-child.card
+			router-link(:to="route")
 				//- Header 
 				//- header.card-header
 				//- 	p.card-header-title Component
@@ -8,20 +9,19 @@
 				//- 		span.icon
 				//- 			i.fas.fa-angle-down
 				.card-image
-					router-link(:to="route")
 						figure.image.is-square
 							img.centerImage(:src="listing.img")
 				.card-content
-						p.title.is-5.limitOneLine: strong: router-link.has-text-dark(:to="route") {{ listing.name }}
-						.content.limitContentLines: router-link.has-text-dark(:to="route") {{ listing.description }}
+						p.title.is-5.limitOneLine: strong.has-text-dark {{ listing.name }}
+						.content.limitContentLines.has-text-dark {{ listing.description }}
 						.media
 							//- TODO add user profile
 							//- .media-left
 							//- 	figure.image.is-48x48
 							//- 		img(src="https://bulma.io/images/placeholders/96x96.png", alt="Placeholder image")
 							.media-content
-								p.limitOneLine: strong {{ listing.sewerFirstName }} {{ listing.sewerLastName }}
-							p.limitOneLine(style="font-size: 0.8rem") {{ sewerDetails }}
+								p.limitOneLine: strong.has-text-dark {{ listing.sewerFirstName }} {{ listing.sewerLastName }}
+							p.limitOneLine.has-text-dark(style="font-size: 0.8rem") {{ sewerDetails }}
 				//- TODO add footer
 				//- footer.card-footer
 					a.card-footer-item.has-text-centered.has-text-danger(@click="likeFeature"): b-icon(icon="heart", pack="far")
