@@ -103,26 +103,7 @@
 				// Vuex action to send to database
 				this.$store
 					.dispatch("createNewListing", formData)
-					.then((newListing) => {
-						// Show Success Notification
-						this.$buefy.snackbar.open({
-							duration: 3000,
-							message: "Listing created successfully!",
-							type: "is-success",
-							position: "is-top-right"
-						});
-						loadingComponent.close();
-
-						// Push to router
-						this.$router.push({
-							name: "listing",
-							params: { urlName: newListing.urlName }
-						});
-
-						// No need to clear listing, user will be redirected anyway
-						// this.isLoading = false;
-						// this.listing = this.generateBlankListing();
-					})
+					.then((newListing) => {})
 					.catch((errData) => {
 						// Errors, i.e. user did not fill out all fields
 						this.errors = errData.userErrors;
@@ -136,6 +117,15 @@
 								position: "is-top-right"
 							});
 						}
+
+						this.$buefy.snackbar.open({
+							duration: 3000,
+							message: "[DEMO] This functionality has been disabled for the demo.",
+							type: "is-primary",
+							position: "is-top-right",
+							queue: false
+						});
+
 						loadingComponent.close();
 						this.isLoading = false;
 					});

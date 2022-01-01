@@ -25,7 +25,9 @@
 				p
 					//- Checkbox if handcrafted
 					span Posted by&nbsp;
-					strong {{ listing.sewerFirstName }} {{ listing.sewerLastName }}
+					strong
+						span {{ listing.sewerFirstName }} {{ listing.sewerLastName }}
+						span(v-if="ownsThisListing") &nbsp;(me)
 				div(v-if="ownsThisListing")
 					p.spacer
 					p.spacer
@@ -112,29 +114,36 @@
 				});
 			},
 			deleteListing() {
-				this.processing = true;
-				this.$store
-					.dispatch("deleteListing", this.listing.urlName)
-					.then(() => {
-						this.$buefy.snackbar.open({
-							duration: 3000,
-							message: "Listing removed successfully!",
-							type: "is-success",
-							position: "is-top-right"
-						});
-						this.$router.push({ name: "home" });
-					})
-					.catch((err) => {
-						console.log(err);
-						this.$buefy.snackbar.open({
-							duration: 3000,
-							message: "Unknown error occured while removing listing.",
-							type: "is-danger",
-							position: "is-top-right"
-						});
+				this.$buefy.snackbar.open({
+					duration: 3000,
+					message: "[DEMO] This functionality has been disabled for the demo.",
+					type: "is-primary",
+					position: "is-top-right",
+					queue: false
+				});
+				// this.processing = true;
+				// this.$store
+				// 	.dispatch("deleteListing", this.listing.urlName)
+				// 	.then(() => {
+				// 		this.$buefy.snackbar.open({
+				// 			duration: 3000,
+				// 			message: "Listing removed successfully!",
+				// 			type: "is-success",
+				// 			position: "is-top-right"
+				// 		});
+				// 		this.$router.push({ name: "home" });
+				// 	})
+				// 	.catch((err) => {
+				// 		console.log(err);
+				// 		this.$buefy.snackbar.open({
+				// 			duration: 3000,
+				// 			message: "Unknown error occured while removing listing.",
+				// 			type: "is-danger",
+				// 			position: "is-top-right"
+				// 		});
 
-						this.processing = true;
-					});
+				// 		this.processing = true;
+				// 	});
 			}
 		},
 		mounted() {

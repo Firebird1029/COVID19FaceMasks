@@ -52,20 +52,24 @@ exports.updateUser = (req, res, next) => {
 			if (userErrors.length >= 1) {
 				return res.status(422).json({ userErrors });
 			} else {
-				User.findOneAndUpdate(
-					{ email: userFromJWT.email },
-					{ firstName: req.body.firstName, lastName: req.body.lastName, phone: req.body.phone },
-					{ new: true },
-					(err, newUserData) => {
-						if (err) return res.status(400).send(err);
-						return res.status(200).json({
-							auth: true,
-							token: req.headers["authorization"].slice(7),
-							// message: "User found",
-							user: newUserData
-						});
-					}
-				);
+				// DEMO
+				return res.status(400).json({
+					userErrors: ["[DEMO] This functionality has been disabled for the demo."]
+				});
+				// User.findOneAndUpdate(
+				// 	{ email: userFromJWT.email },
+				// 	{ firstName: req.body.firstName, lastName: req.body.lastName, phone: req.body.phone },
+				// 	{ new: true },
+				// 	(err, newUserData) => {
+				// 		if (err) return res.status(400).send(err);
+				// 		return res.status(200).json({
+				// 			auth: true,
+				// 			token: req.headers["authorization"].slice(7),
+				// 			// message: "User found",
+				// 			user: newUserData
+				// 		});
+				// 	}
+				// );
 			}
 		}
 	})(req, res, next);
@@ -89,36 +93,44 @@ exports.changePassword = (req, res, next) => {
 	if (userErrors.length >= 1) {
 		return res.status(422).json({ userErrors });
 	} else {
-		passport.authenticate("changePassword", (err, user) => {
-			if (err) {
-				// If user not found in database or password incorrect. These errors come from passportConfig.js
-				return res.status(401).json({ userErrors: [err.message], serverErrors: [err] });
-			} else {
-				req.login(user, (reqErr) => {
-					if (reqErr) {
-						console.log("Error in req.login in exports.changePassword in userController.js", reqErr);
-						return res.status(400).json({
-							userErrors: ["Unknown error occured when changing password."]
-						});
-					} else {
-						return res.status(200).json({
-							auth: true,
-							token: req.headers["authorization"].slice(7),
-							user
-						});
-					}
-				});
-			}
-		})(req, res, next);
+		// DEMO
+		return res.status(400).json({
+			userErrors: ["[DEMO] This functionality has been disabled for the demo."]
+		});
+		// passport.authenticate("changePassword", (err, user) => {
+		// 	if (err) {
+		// 		// If user not found in database or password incorrect. These errors come from passportConfig.js
+		// 		return res.status(401).json({ userErrors: [err.message], serverErrors: [err] });
+		// 	} else {
+		// 		req.login(user, (reqErr) => {
+		// 			if (reqErr) {
+		// 				console.log("Error in req.login in exports.changePassword in userController.js", reqErr);
+		// 				return res.status(400).json({
+		// 					userErrors: ["Unknown error occured when changing password."]
+		// 				});
+		// 			} else {
+		// 				return res.status(200).json({
+		// 					auth: true,
+		// 					token: req.headers["authorization"].slice(7),
+		// 					user
+		// 				});
+		// 			}
+		// 		});
+		// 	}
+		// })(req, res, next);
 	}
 };
 
 // DELETE
 exports.deleteUser = (req, res) => {
-	User.findOneAndDelete()({ _id: req.params.userId }, (err, deletedUser) => {
-		if (err) return res.status(400).send(err);
-		return res.status(200).json(deletedUser);
+	// DEMO
+	return res.status(400).json({
+		userErrors: ["[DEMO] This functionality has been disabled for the demo."]
 	});
+	// User.findOneAndDelete()({ _id: req.params.userId }, (err, deletedUser) => {
+	// 	if (err) return res.status(400).send(err);
+	// 	return res.status(200).json(deletedUser);
+	// });
 };
 
 // Create User - POST
@@ -142,37 +154,41 @@ exports.createUser = (req, res, next) => {
 				// User already exists in database
 				return res.status(409).json({ userErrors: ["Your account already exists. Please login instead."] });
 			} else {
+				// DEMO
+				req.body.email = "john@doe.com";
+				req.body.password = "johndoe123";
+				this.loginUser(req, res, next);
 				// Generate hashed password via passportConfig.js
-				passport.authenticate("register", (err, user) => {
-					// Creating the user via Passport is pretty straightforward, there should be no errors
-					if (err) {
-						console.log("Error in passport.authenticate in exporst.createUser in userController.js", err);
-						return res.status(400).json({
-							userErrors: ["Unknown error when signing up. Please refresh and try again."]
-						});
-					} else {
-						// User created successfully, req.login and send data back to client
-						req.login(user, (reqErr) => {
-							if (reqErr) {
-								console.log("Error in req.login in exports.createUser in userController.js", reqErr);
-								return res.status(400).json({
-									userErrors: ["Unknown error when signing up. Please refresh and try again."]
-								});
-							} else {
-								// return res.status(200).json(user);
+				// passport.authenticate("register", (err, user) => {
+				// 	// Creating the user via Passport is pretty straightforward, there should be no errors
+				// 	if (err) {
+				// 		console.log("Error in passport.authenticate in exporst.createUser in userController.js", err);
+				// 		return res.status(400).json({
+				// 			userErrors: ["Unknown error when signing up. Please refresh and try again."]
+				// 		});
+				// 	} else {
+				// 		// User created successfully, req.login and send data back to client
+				// 		req.login(user, (reqErr) => {
+				// 			if (reqErr) {
+				// 				console.log("Error in req.login in exports.createUser in userController.js", reqErr);
+				// 				return res.status(400).json({
+				// 					userErrors: ["Unknown error when signing up. Please refresh and try again."]
+				// 				});
+				// 			} else {
+				// 				// return res.status(200).json(user);
 
-								// Following Vue JWT tutorial, which sends JWT right after regristration
-								const token = jwt.sign({ id: user.email }, process.env.JWT_SECRET);
-								return res.status(200).json({
-									auth: true,
-									// message: "user registered",
-									token,
-									user
-								});
-							}
-						});
-					}
-				})(req, res, next);
+				// 				// Following Vue JWT tutorial, which sends JWT right after regristration
+				// 				const token = jwt.sign({ id: user.email }, process.env.JWT_SECRET);
+				// 				return res.status(200).json({
+				// 					auth: true,
+				// 					// message: "user registered",
+				// 					token,
+				// 					user
+				// 				});
+				// 			}
+				// 		});
+				// 	}
+				// })(req, res, next);
 			}
 		});
 	}

@@ -71,6 +71,13 @@
 						.dispatch("register", this.accountInfo)
 						.then(() => {
 							this.$router.push({ name: "home" });
+							this.$buefy.snackbar.open({
+								duration: 3000,
+								message: "[DEMO] Logged in as demo user instead.",
+								type: "is-primary",
+								position: "is-top-right",
+								queue: false
+							});
 						})
 						.catch((errData) => {
 							this.errors = errData.userErrors;

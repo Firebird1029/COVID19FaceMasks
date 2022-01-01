@@ -87,21 +87,7 @@
 				// Dispatch action in store
 				this.$store
 					.dispatch("updateUser", this.accountInfo)
-					.then((userData) => {
-						// Update user data
-						this.autofillUserInfo(userData);
-						this.errors = [];
-
-						// Display succcess to user
-						this.isLoading = false;
-						loadingComponent.close();
-						this.$buefy.snackbar.open({
-							duration: 3000,
-							message: "Profile updated successfully!",
-							type: "is-success",
-							position: "is-top-right"
-						});
-					})
+					.then(() => {})
 					.catch((errData) => {
 						// i.e. first name field is blank
 						this.errors = errData.userErrors;
@@ -114,6 +100,14 @@
 								position: "is-top-right"
 							});
 						}
+
+						this.$buefy.snackbar.open({
+							duration: 3000,
+							message: "[DEMO] This functionality has been disabled for the demo.",
+							type: "is-primary",
+							position: "is-top-right",
+							queue: false
+						});
 
 						this.isLoading = false;
 						loadingComponent.close();
@@ -132,21 +126,7 @@
 						newPassword: this.passwordInfo.newPassword,
 						newPasswordConfirm: this.passwordInfo.newPasswordConfirm
 					})
-					.then(() => {
-						// Update user data
-						this.passwordInfo = this.resetPasswordSet();
-						this.errors = [];
-
-						// Display succcess to user
-						this.isLoading = false;
-						loadingComponent.close();
-						this.$buefy.snackbar.open({
-							duration: 3000,
-							message: "Password changed successfully!",
-							type: "is-success",
-							position: "is-top-right"
-						});
-					})
+					.then(() => {})
 					.catch((errData) => {
 						// i.e. password field is blank, passwords do not match
 						this.errors = errData.userErrors;
@@ -159,6 +139,14 @@
 								position: "is-top-right"
 							});
 						}
+
+						this.$buefy.snackbar.open({
+							duration: 3000,
+							message: "[DEMO] This functionality has been disabled for the demo.",
+							type: "is-primary",
+							position: "is-top-right",
+							queue: false
+						});
 
 						this.isLoading = false;
 						loadingComponent.close();
